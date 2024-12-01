@@ -257,45 +257,54 @@ public class SignupScreen extends JFrame{
                 private void createAccount() {
                     // TODO Auto-generated method stub
                     try {
-                        // Get the full name from the text box
+                        // Get user input
                         String fullName = userNameTextBox.getText().trim();
-            
-                        // Split the full name into first name and last name using space as delimiter
                         String[] nameParts = fullName.split(" ");
                         if (nameParts.length >= 2) {
                             String firstName = nameParts[0];
                             String lastName = nameParts[1];
-            
-                            // Get the password and confirm password
                             String password = userPasswordTextBox.getText().trim();
                             String confirmPassword = userConfirmPasswordTextBox.getText().trim();
-            
-                            // Check if password and confirm password match
+                
+                            // Check if passwords match
                             if (!password.equals(confirmPassword)) {
                                 JOptionPane.showMessageDialog(null, "Passwords do not match.");
-                                return; // Stop the further processing
+                                return;
                             }
-            
-                            // Create a DTO object with the first and last names
-                            userDto user = new userDto(
-                                    userIDTextBox.getText(),
-                                    firstName,
-                                    lastName,
-                                    password,
-                                    dropdown.getSelectedItem().toString(), // Warehouse ID
-                                    userMobileTextBox.getText()
-                            );
-            
-                            // Call the UserController to create the account
-                            String result = userController.createAccount(user);
-            
-                            // Show the result message
-                            JOptionPane.showMessageDialog(null, result);
+                
+                            // Retrieve warehouse ID from selected warehouse name
+                            String selectedWarehouseName = (String) dropdown.getSelectedItem();
+                            String warehouseId = getWarehouseIdByName(selectedWarehouseName);
+                
+                            if (warehouseId == null || warehouseId.isEmpty()) {
+                                JOptionPane.showMessageDialog(null, "Invalid Warehouse selected.");
+                                return;
+                            }
+                
+                            // Insert data into the Employee table
+                            Connection connection = DBConnection.getInstance().getConnection();
+                            String sql = "INSERT INTO Employee (Employee_ID, First_Name, Second_Name, Telephone, User_Password, Warehouse_ID) " +
+                                         "VALUES (?, ?, ?, ?, ?, ?)";
+                            PreparedStatement pst = connection.prepareStatement(sql);
+                
+                            pst.setString(1, userIDTextBox.getText().trim());
+                            pst.setString(2, firstName);
+                            pst.setString(3, lastName);
+                            pst.setString(4, userMobileTextBox.getText().trim());
+                            pst.setString(5, password);
+                            pst.setString(6, warehouseId);
+                
+                            int rowsInserted = pst.executeUpdate();
+                            if (rowsInserted > 0) {
+                                JOptionPane.showMessageDialog(null, "Employee account created successfully!");
+                                clearFields(); // Clear input fields after successful insertion
+                            } else {
+                                JOptionPane.showMessageDialog(null, "Failed to create Employee account.");
+                            }
                         } else {
                             JOptionPane.showMessageDialog(null, "Please enter both first name and last name.");
                         }
-            
-                    } catch (Exception ex) {
+                    } catch (SQLException ex) {
                         JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                     }
                 }
