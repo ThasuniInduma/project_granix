@@ -179,7 +179,7 @@ public class LoginScreen extends JFrame {
 
     // Load Dashboard after successful login
     private void loadDashboard() {
-        new HomeScreen().setVisible(true);
+        new DashboardView().setVisible(true);
         this.dispose();
     }
 
