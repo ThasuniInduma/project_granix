@@ -104,6 +104,6 @@ public class userDto {
 
     @Override
     public String toString() {
-        return "userEntity{" + "Employee_ID=" + Employee_ID + ", First_name=" + First_name + ", Second_name=" + Second_name + ", User_Password=" + User_Password + ", Warehouse_ID=" + Warehouse_ID + ", Telephone=" + Telephone + '}';
+        return "userDto{" + "Employee_ID=" + Employee_ID + ", First_name=" + First_name + ", Second_name=" + Second_name + ", User_Password=" + User_Password + ", Warehouse_ID=" + Warehouse_ID + ", Telephone=" + Telephone + '}';
     }
 }

@@ -280,31 +280,21 @@ public class SignupScreen extends JFrame{
                                 JOptionPane.showMessageDialog(null, "Invalid Warehouse selected.");
                                 return;
                             }
-                
-                            // Insert data into the Employee table
-                            Connection connection = DBConnection.getInstance().getConnection();
-                            String sql = "INSERT INTO Employee (Employee_ID, First_Name, Second_Name, Telephone, User_Password, Warehouse_ID) " +
-                                         "VALUES (?, ?, ?, ?, ?, ?)";
-                            PreparedStatement pst = connection.prepareStatement(sql);
-                
-                            pst.setString(1, userIDTextBox.getText().trim());
-                            pst.setString(2, firstName);
-                            pst.setString(3, lastName);
-                            pst.setString(4, userMobileTextBox.getText().trim());
-                            pst.setString(5, password);
-                            pst.setString(6, warehouseId);
-                
-                            int rowsInserted = pst.executeUpdate();
-                            if (rowsInserted > 0) {
-                                JOptionPane.showMessageDialog(null, "Employee account created successfully!");
-                                clearFields(); // Clear input fields after successful insertion
-                            } else {
+                            try{
+                            userDto userDto = new userDto(userIDTextBox.getText(),firstName,lastName,password, warehouseId,userMobileTextBox.getText());
+        
+                            String result = userController.createAccount(userDto);
+                            JOptionPane.showMessageDialog(null, result);
+                            clearFields();
+                            
+                            } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(null, "Failed to create Employee account.");
                             }
+                            
                         } else {
                             JOptionPane.showMessageDialog(null, "Please enter both first name and last name.");
                         }
-                    } catch (SQLException ex) {
+                    } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                     }
                 }
