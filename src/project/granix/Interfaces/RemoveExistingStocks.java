@@ -1,21 +1,19 @@
 package Interfaces;
 
-import javax.swing.BorderFactory;
 //Imports
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import javax.swing.border.Border;
 
-public class StockAvailability extends JFrame{
-    public StockAvailability(){
+public class RemoveExistingStocks extends JFrame{
+    public RemoveExistingStocks(){
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -28,7 +26,7 @@ public class StockAvailability extends JFrame{
         Image image = iconImage.getImage();
         setIconImage(image);
 
-        //JFrame Background Image
+       //JFrame Background Image
        ImageIcon backgroundImageSet = new ImageIcon(getClass().getResource("Assets/sideView.png"));
        Image imageSet = backgroundImageSet.getImage();
        Image resizedImage = imageSet.getScaledInstance(1000, 700, Image.SCALE_SMOOTH);
@@ -63,8 +61,8 @@ public class StockAvailability extends JFrame{
         Border border = BorderFactory.createLineBorder(Color.BLACK, 1);
 
         //JLabel For Interface Title
-        JLabel titleLabel = new JLabel("Stocks Availability");
-        titleLabel.setBounds(310, 15, 400, 50);
+        JLabel titleLabel = new JLabel("Add New Stocks");
+        titleLabel.setBounds(310, 15, 600, 50);
         titleLabel.setBackground(new Color(237, 235, 235));
         titleLabel.setForeground(Color.WHITE);
         titleLabel.setFont(new Font("Arial", Font.BOLD, 40));
@@ -79,8 +77,8 @@ public class StockAvailability extends JFrame{
 
         //Buttons defined for Stock Availability
         JButton availabilityButton = new JButton("Stock Availability");
-        availabilityButton.setBounds(10, 220, 250, 50);
-        availabilityButton.setBackground(Color.WHITE);
+        availabilityButton.setBounds(10, 220, 200, 50);
+        availabilityButton.setBackground(new Color(237, 235, 235));
         availabilityButton.setForeground(Color.BLACK);
         availabilityButton.setFont(new Font("Arial", Font.BOLD, 20));
         availabilityButton.setBorder(border);
@@ -95,8 +93,8 @@ public class StockAvailability extends JFrame{
 
         //Buttons defined for manage Stocks
         JButton manageStocksButton = new JButton("Manage Stocks");
-        manageStocksButton.setBounds(10, 380, 200, 50);
-        manageStocksButton.setBackground(new Color(237, 235, 235));
+        manageStocksButton.setBounds(10, 380, 250, 50);
+        manageStocksButton.setBackground(Color.WHITE);
         manageStocksButton.setForeground(Color.BLACK);
         manageStocksButton.setFont(new Font("Arial", Font.BOLD, 20));
         manageStocksButton.setBorder(border);
@@ -108,22 +106,7 @@ public class StockAvailability extends JFrame{
         logoutButton.setForeground(Color.BLACK);
         logoutButton.setFont(new Font("Arial", Font.BOLD, 20));
         logoutButton.setBorder(border);
-        
-        //Buttons defined for Goverment Storage
-        JButton governmentIconButton = new JButton("Government Sector");
-        governmentIconButton.setBounds(420, 160, 400, 80);
-        governmentIconButton.setBackground(new Color(172, 145, 127));
-        governmentIconButton.setBorder(new LineBorder(new Color(102,51,0), 1));
-        governmentIconButton.setForeground(Color.WHITE);
-        governmentIconButton.setFont(new Font("Arial", Font.BOLD, 25));
-
-        //Buttons defined for Private Storage
-        JButton privateIconButton = new JButton("Private Sector");
-        privateIconButton.setBounds(420, 300, 400, 80);
-        privateIconButton.setBackground(new Color(172, 145, 127));
-        privateIconButton.setBorder(new LineBorder(new Color(102,51,0), 1));
-        privateIconButton.setForeground(Color.WHITE);
-        privateIconButton.setFont(new Font("Arial", Font.BOLD, 25));
+      
 
         //Event actions defined for Dashboard Button
         dashBoardButton.addActionListener(new ActionListener() {
@@ -165,35 +148,18 @@ public class StockAvailability extends JFrame{
             }
         });
 
-        //Event actions defined for Government Sector Select
-        governmentIconButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                dispose();
-                new GovernmentAvailability().setVisible(true);
-            }
-        });
-
-        //Event actions defined for Provate Sector Select
-        privateIconButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                dispose();
-                new PrivateAvailability().setVisible(true);
-            }
-        });
-
         //Add Elements to the Frame
         add(logoImageSetter);
-        add(dashBoardButton);
         add(titleLabel);
+        add(dashBoardButton);
         add(availabilityButton);
         add(reportButton);
         add(manageStocksButton);
         add(logoutButton);
-        add(governmentIconButton);
-        add(privateIconButton);
         add(titleBox);
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
-    }   
+    }
+
 }
