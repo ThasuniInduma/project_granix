@@ -9,6 +9,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.userController;
 import db.DBConnection;
@@ -27,6 +28,7 @@ import java.awt.*;
 public class SignupScreen extends JFrame{
     public SignupScreen(){
         userController userController = new userController();
+
 
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
@@ -115,6 +117,7 @@ public class SignupScreen extends JFrame{
         fetchWarehouseIDs(dropdown);
         
         
+    
                 // Add a FocusListener for userNameTextBox
                 userNameTextBox.addFocusListener(new FocusListener() {
                     @Override
@@ -325,8 +328,17 @@ public class SignupScreen extends JFrame{
                 add(backButton);
                 add(contentBox);
                 add(backgroundImageSetter);
+
+                
+                SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    // Manually set focus to a different component
+                    submitButton.requestFocusInWindow(); // Set focus to Submit button or another component
+                }
+            });
         
             }
+            
         
             private void fetchWarehouseIDs(JComboBox<String> dropdown) {
                 // TODO Auto-generated method stub
@@ -386,6 +398,7 @@ public class SignupScreen extends JFrame{
         }
         return warehouseId;
     }
+    
     
     
 }
