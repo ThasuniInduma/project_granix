@@ -290,6 +290,8 @@ public class SignupScreen extends JFrame{
                             String result = userController.createAccount(userDto);
                             JOptionPane.showMessageDialog(null, result);
                             clearFields();
+                            dispose(); // Close the current Signup screen
+                            new DashboardView().setVisible(true); // Open the new Dashboard screen
                             
                             } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(null, "Failed to create Employee account.");
