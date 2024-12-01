@@ -5,13 +5,20 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import db.DBConnection;
+import dto.userDto;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.awt.*;
 
 public class SignupScreen extends JFrame{
@@ -172,15 +179,61 @@ public class SignupScreen extends JFrame{
             public void actionPerformed(ActionEvent e){
 
                 //Variables Defined
-                String userName = userNameTextBox.getText();
+                /*String userName = userNameTextBox.getText();
                 String phoneNumber = userMobileTextBox.getText();
                 String passwordDefined = userPasswordTextBox.getText();
                 String confirmPasswordDefined = userConfirmPasswordTextBox.getText();
                 
                 if((userName == "Enter your Name")||(phoneNumber == "Enter your Mobile Number")||(passwordDefined == "Enter a Password")){
                         System.out.println("Hello");
-                }
+                }*/
+                try {
+            // Retrieve and split the full name into first name and last name
+            String fullName = userNameTextBox.getText().trim();
+            String[] nameParts = fullName.split(" ", 2); // Split into two parts
+            String firstName = nameParts.length > 0 ? nameParts[0] : ""; // First part as first name
+            String lastName = nameParts.length > 1 ? nameParts[1] : "";  // Second part as last name
+            
+            String mobileNumber = userMobileTextBox.getText();
+            String password = userPasswordTextBox.getText();
+            String confirmPassword = userConfirmPasswordTextBox.getText();
+
+            // Validate input
+            if (fullName.isEmpty() || mobileNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Please fill all fields.");
+                return;
             }
+
+            // Check if password and confirm password match
+            if (!password.equals(confirmPassword)) {
+                JOptionPane.showMessageDialog(null, "Passwords do not match. Please try again.");
+                return;
+            }
+
+            // Insert user data into database
+            Connection connection = DBConnection.getInstance().getConnection();
+            String sql = "INSERT INTO users (first_name, last_name, mobile_number, password) VALUES (?, ?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setString(3, mobileNumber);
+            preparedStatement.setString(4, password);
+            preparedStatement.executeUpdate();
+
+            JOptionPane.showMessageDialog(null, "Account created successfully!");
+            clearFields();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+        }
+    }
+
+    private void clearFields() {
+        userNameTextBox.setText("");
+        userMobileTextBox.setText("");
+        userPasswordTextBox.setText("");
+        userConfirmPasswordTextBox.setText("");
+    }
+            
         });
 
 
