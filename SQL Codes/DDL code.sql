@@ -19,16 +19,10 @@ CREATE TABLE employee (
     Second_name VARCHAR(30) NOT NULL,
     User_Password VARCHAR(10) NOT NULL,
     Warehouse_ID CHAR(5) NOT NULL,
+    Telephone CHAR(10) NOT NULL,
     FOREIGN KEY (Warehouse_ID) REFERENCES warehouse(Warehouse_ID)
 );
 
-/* Telephone Numbers for Employee */
-CREATE TABLE employee_telephone (
-    Telephone_no_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Employee_ID CHAR(5) NOT NULL,
-    Telephone_no CHAR(10) NOT NULL,
-    FOREIGN KEY (Employee_ID) REFERENCES employee(Employee_ID)
-);
 
 /* Create Stock Table */
 CREATE TABLE stock (

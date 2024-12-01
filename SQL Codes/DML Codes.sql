@@ -10,20 +10,12 @@ VALUES
 ('W003'       , 'Jaffna_Warehouse' , 600         , 'Westside');
 
 /* Insert Data into Employee */
-INSERT INTO employee (Employee_ID, First_name, Second_name, User_Password, Warehouse_ID)
+INSERT INTO employee (Employee_ID, First_name, Second_name, User_Password, Telephone, Warehouse_ID)
 VALUES 
-/*Employee_ID, First_name, Second_name  , User_Password, Warehouse_ID*/
-('E001'      , 'Nimal  ' , 'Perera'     , 'pass123'    , 'W001'),
-('E002'      , 'Kamal'   , 'Amarasinghe', 'pass456'    , 'W002'),
-('E003'      , 'Sumal'   , 'Rathnayaka' , 'pass789'    , 'W003');
-
-/* Insert Data into Employee Telephone */
-INSERT INTO employee_telephone (Employee_ID, Telephone_no)
-VALUES 
-/*Employee_ID, Telephone_no*/
-('E001'      , '0776541289'),
-('E002'      , '0765329842'),
-('E003'      , '0758329468');
+/*Employee_ID, First_name, Second_name  , User_Password,Telephone, Warehouse_ID*/
+('E001'      , 'Nimal  ' , 'Perera'     , 'pass123'    ,'0123456789', 'W001'),
+('E002'      , 'Kamal'   , 'Amarasinghe', 'pass456'    ,'0123456789', 'W002'),
+('E003'      , 'Sumal'   , 'Rathnayaka' , 'pass789'    ,'0123456789', 'W003');
 
 /* Insert Data into Stock */
 INSERT INTO stock (Stock_ID, Stock_name, Stock_type, Quantity, Total_Availability)
