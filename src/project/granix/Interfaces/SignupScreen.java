@@ -256,6 +256,7 @@ public class SignupScreen extends JFrame{
                         
                     createAccount();
                 }
+                
                             
                 private void createAccount() {
                     // TODO Auto-generated method stub
@@ -336,6 +337,7 @@ public class SignupScreen extends JFrame{
                     submitButton.requestFocusInWindow(); // Set focus to Submit button or another component
                 }
             });
+            
         
             }
             
@@ -360,7 +362,7 @@ public class SignupScreen extends JFrame{
             
                     // Clear any previous items in the dropdown
                     dropdown.removeAllItems();
-            
+                    dropdown.addItem("Please select a warehouse");
                     // Check if any records are found
                     boolean found = false;
                     while (resultSet.next()) {
@@ -371,7 +373,7 @@ public class SignupScreen extends JFrame{
                         dropdown.addItem(warehouseName);
                         found = true;
                     }
-            
+                    dropdown.setSelectedItem("Please select");
                     if (!found) {
                         JOptionPane.showMessageDialog(null, "No warehouses found.");
                     }
