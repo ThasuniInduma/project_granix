@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import controller.userController;
 import db.DBConnection;
 import dto.userDto;
 
@@ -19,11 +20,13 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.*;
 
 public class SignupScreen extends JFrame{
     public SignupScreen(){
+        userController userController = new userController();
 
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
@@ -66,7 +69,7 @@ public class SignupScreen extends JFrame{
         SignUpText.setFont(new Font("Arial", Font.BOLD, 30));
 
         //Text Fields Defined for UserName
-        JTextField userNameTextBox = new JTextField("Enter your Name");
+        JTextField userNameTextBox = new JTextField("Enter your User Name");
         userNameTextBox.setBounds(140, 300, 180, 40);
         userNameTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
@@ -100,170 +103,290 @@ public class SignupScreen extends JFrame{
         backButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         //Text Fields Defined for UserID
-        JTextField userIDTextBox = new JTextField("Enter User ID");
+        JTextField userIDTextBox = new JTextField("Enter your User ID");
         userIDTextBox.setBounds(140, 240, 180, 40);
         userIDTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         // Create a dropdown list for Warehouse Type
-        String[] options = {"Kandy_Warehouse", "Colombo_Warehouse", "Jaffna_Warehouse"};
-        JComboBox<String> dropdown = new JComboBox<>(options);
+        
+        JComboBox<String> dropdown = new JComboBox<>();
         dropdown.setBounds(140, 540, 180, 40);
         dropdown.setBackground(Color.WHITE);
-
-
-        // Add a FocusListener for userNameTextBox
-        userNameTextBox.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Add Focus
-                userNameTextBox.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Lose Focus
-                if (userNameTextBox.getText().isEmpty()) {
-                    userNameTextBox.setText("Enter your Name");
-                }
-            }
-        });
-
-        // Add a FocusListener for userMobileTextBox
-        userMobileTextBox.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Add Focus
-                userMobileTextBox.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Lose Focus
-                if (userMobileTextBox.getText().isEmpty()) {
-                    userMobileTextBox.setText("Enter your Mobile Number");
-                }
-            }
-        });
-
-        // Add a FocusListener for userPasswordTextBox 
-        userPasswordTextBox .addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Add Focus
-                userPasswordTextBox .setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Lose Focus
-                if (userPasswordTextBox .getText().isEmpty()) {
-                    userPasswordTextBox .setText("Enter a Password");
-                }
-            }
-        });
-
-        // Add a FocusListener for userConfirmPasswordTextBox
-        userConfirmPasswordTextBox .addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Add Focus
-                userConfirmPasswordTextBox.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Lose Focus
-                if (userConfirmPasswordTextBox .getText().isEmpty()) {
-                    userConfirmPasswordTextBox.setText("Confirm Password");
-                }
-            }
-        });
-
-        //Event actions defined for backButton
-        backButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                dispose();
-                new HomeScreen().setVisible(true);
-            }
-        });
-
-        //Event actions defined for Submit Button
-        submitButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-
-                //Variables Defined
-                /*String userName = userNameTextBox.getText();
-                String phoneNumber = userMobileTextBox.getText();
-                String passwordDefined = userPasswordTextBox.getText();
-                String confirmPasswordDefined = userConfirmPasswordTextBox.getText();
+        fetchWarehouseIDs(dropdown);
+        
+        
+                // Add a FocusListener for userNameTextBox
+                userNameTextBox.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // Add Focus
+                        if (userNameTextBox.getText().equals("Enter your User Name")) {
+                            userNameTextBox.setText("");
+                            userNameTextBox.setFont(new Font("Arial", Font.PLAIN, 13));
+                            userNameTextBox.setForeground(Color.BLACK);
+                        }
+                    }
+        
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        // Lose Focus
+                        if (userNameTextBox.getText().isEmpty()) {
+                            userNameTextBox.setText("Enter your User Name");
+                            userNameTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+                            userNameTextBox.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+                userIDTextBox.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // Add Focus
+                        if (userIDTextBox.getText().equals("Enter your User ID")) {
+                            userIDTextBox.setText("");
+                            userIDTextBox.setFont(new Font("Arial", Font.PLAIN, 13));
+                            userIDTextBox.setForeground(Color.BLACK);
+                        }
+                    }
+        
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        // Lose Focus
+                        if (userIDTextBox.getText().isEmpty()) {
+                            userIDTextBox.setText("Enter your User ID");
+                            userIDTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+                            userIDTextBox.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+        
+                // Add a FocusListener for userMobileTextBox
+                userMobileTextBox.addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // Add Focus
+                        if (userMobileTextBox.getText().equals("Enter your Mobile Number")) {
+                            userMobileTextBox.setText("");
+                            userMobileTextBox.setFont(new Font("Arial", Font.PLAIN, 13));
+                            userMobileTextBox.setForeground(Color.BLACK);
+                        }
+                        
+                    }
+        
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        // Lose Focus
+                        if (userMobileTextBox.getText().isEmpty()) {
+                            userMobileTextBox.setText("Enter your Mobile Number");
+                            userMobileTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+                            userMobileTextBox.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+        
+                // Add a FocusListener for userPasswordTextBox 
+                userPasswordTextBox .addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // Add Focus
+                        if (userPasswordTextBox.getText().equals("Enter a Password")) {
+                            userPasswordTextBox.setText("");
+                            userPasswordTextBox.setFont(new Font("Arial", Font.PLAIN, 13));
+                            userPasswordTextBox.setForeground(Color.BLACK);
+                        }
+                    }
+        
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        // Lose Focus
+                        if (userPasswordTextBox.getText().isEmpty()) {
+                            userPasswordTextBox.setText("Enter a Password");
+                            userPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+                            userPasswordTextBox.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+        
+                // Add a FocusListener for userConfirmPasswordTextBox
+                userConfirmPasswordTextBox .addFocusListener(new FocusListener() {
+                    @Override
+                    public void focusGained(FocusEvent e) {
+                        // Add Focus
+                        if (userConfirmPasswordTextBox.getText().equals("Confirm Password")) {
+                            userConfirmPasswordTextBox.setText("");
+                            userConfirmPasswordTextBox.setFont(new Font("Arial", Font.PLAIN, 13));
+                            userConfirmPasswordTextBox.setForeground(Color.BLACK);
+                        }
+                    }
+        
+                    @Override
+                    public void focusLost(FocusEvent e) {
+                        // Lose Focus
+                        if (userConfirmPasswordTextBox.getText().isEmpty()) {
+                            userConfirmPasswordTextBox.setText("Confirm Password");
+                            userConfirmPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+                            userConfirmPasswordTextBox.setForeground(Color.GRAY);
+                        }
+                    }
+                });
+        
+                //Event actions defined for backButton
+                backButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        dispose();
+                        new HomeScreen().setVisible(true);
+                    }
+                });
                 
-                if((userName == "Enter your Name")||(phoneNumber == "Enter your Mobile Number")||(passwordDefined == "Enter a Password")){
-                        System.out.println("Hello");
-                }*/
+        
+                dropdown.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+                        String selectedWarehouse = (String) dropdown.getSelectedItem();
+                        String warehouseId = getWarehouseIdByName(selectedWarehouse);
+                        // Use the warehouseId to insert into Employee table
+                    }
+                });
+                
+                
+                //Event actions defined for Submit Button
+                submitButton.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        
+                    createAccount();
+                }
+                            
+                private void createAccount() {
+                    // TODO Auto-generated method stub
+                    try {
+                        // Get the full name from the text box
+                        String fullName = userNameTextBox.getText().trim();
+            
+                        // Split the full name into first name and last name using space as delimiter
+                        String[] nameParts = fullName.split(" ");
+                        if (nameParts.length >= 2) {
+                            String firstName = nameParts[0];
+                            String lastName = nameParts[1];
+            
+                            // Get the password and confirm password
+                            String password = userPasswordTextBox.getText().trim();
+                            String confirmPassword = userConfirmPasswordTextBox.getText().trim();
+            
+                            // Check if password and confirm password match
+                            if (!password.equals(confirmPassword)) {
+                                JOptionPane.showMessageDialog(null, "Passwords do not match.");
+                                return; // Stop the further processing
+                            }
+            
+                            // Create a DTO object with the first and last names
+                            userDto user = new userDto(
+                                    userIDTextBox.getText(),
+                                    firstName,
+                                    lastName,
+                                    password,
+                                    dropdown.getSelectedItem().toString(), // Warehouse ID
+                                    userMobileTextBox.getText()
+                            );
+            
+                            // Call the UserController to create the account
+                            String result = userController.createAccount(user);
+            
+                            // Show the result message
+                            JOptionPane.showMessageDialog(null, result);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "Please enter both first name and last name.");
+                        }
+            
+                    } catch (Exception ex) {
+                        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
+                    }
+                }
+                    
+            private void clearFields() {
+                userIDTextBox.setText("");
+                userNameTextBox.setText("");
+                userMobileTextBox.setText("");
+                userPasswordTextBox.setText("");
+                userConfirmPasswordTextBox.setText("");
+                dropdown.setSelectedItem("please select");
+            }
+                    
+                });
+        
+                
+        
+                //Add Elements to the Frame
+                add(logoImageSetter);
+                add(SignUpText);
+                add(userIDTextBox);
+                add(userNameTextBox);
+                add(userMobileTextBox);
+                add(userPasswordTextBox);
+                add(userConfirmPasswordTextBox);
+                add(dropdown);
+                add(submitButton);
+                add(backButton);
+                add(contentBox);
+                add(backgroundImageSetter);
+        
+            }
+        
+            private void fetchWarehouseIDs(JComboBox<String> dropdown) {
+                // TODO Auto-generated method stub
+                if (dropdown == null) {
+                    JOptionPane.showMessageDialog(null, "Dropdown is not initialized.");
+                    return;
+                }
+            
                 try {
-            // Retrieve and split the full name into first name and last name
-            String fullName = userNameTextBox.getText().trim();
-            String[] nameParts = fullName.split(" ", 2); // Split into two parts
-            String firstName = nameParts.length > 0 ? nameParts[0] : ""; // First part as first name
-            String lastName = nameParts.length > 1 ? nameParts[1] : "";  // Second part as last name
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    if (connection == null) {
+                        JOptionPane.showMessageDialog(null, "Database connection failed.");
+                        return;
+                    }
             
-            String mobileNumber = userMobileTextBox.getText();
-            String password = userPasswordTextBox.getText();
-            String confirmPassword = userConfirmPasswordTextBox.getText();
-
-            // Validate input
-            if (fullName.isEmpty() || mobileNumber.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Please fill all fields.");
-                return;
-            }
-
-            // Check if password and confirm password match
-            if (!password.equals(confirmPassword)) {
-                JOptionPane.showMessageDialog(null, "Passwords do not match. Please try again.");
-                return;
-            }
-
-            // Insert user data into database
+                    String sql = "SELECT warehouse_id, warehouse_name FROM warehouse";  // Assuming warehouse_name exists
+                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            
+                    // Clear any previous items in the dropdown
+                    dropdown.removeAllItems();
+            
+                    // Check if any records are found
+                    boolean found = false;
+                    while (resultSet.next()) {
+                        //String warehouseId = resultSet.getString("warehouse_id");
+                        String warehouseName = resultSet.getString("warehouse_name");
+            
+                        // Add the warehouse name and ID to the dropdown
+                        dropdown.addItem(warehouseName);
+                        found = true;
+                    }
+            
+                    if (!found) {
+                        JOptionPane.showMessageDialog(null, "No warehouses found.");
+                    }
+                } catch (SQLException ex) {
+                    JOptionPane.showMessageDialog(null, "Error fetching warehouse names: " + ex.getMessage());
+                }
+                
+    }
+    // Method to get Warehouse ID based on Warehouse Name
+    public String getWarehouseIdByName(String warehouseName) {
+        String warehouseId = null;
+        try {
+            String query = "SELECT Warehouse_ID FROM Warehouse WHERE Warehouse_Name = ?";
             Connection connection = DBConnection.getInstance().getConnection();
-            String sql = "INSERT INTO users (first_name, last_name, mobile_number, password) VALUES (?, ?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, firstName);
-            preparedStatement.setString(2, lastName);
-            preparedStatement.setString(3, mobileNumber);
-            preparedStatement.setString(4, password);
-            preparedStatement.executeUpdate();
-
-            JOptionPane.showMessageDialog(null, "Account created successfully!");
-            clearFields();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
-        }
-    }
-
-    private void clearFields() {
-        userNameTextBox.setText("");
-        userMobileTextBox.setText("");
-        userPasswordTextBox.setText("");
-        userConfirmPasswordTextBox.setText("");
-    }
+            PreparedStatement pst = connection.prepareStatement(query);
+            pst.setString(1, warehouseName);
+            ResultSet rs = pst.executeQuery();
             
-        });
-
-
-        //Add Elements to the Frame
-        add(logoImageSetter);
-        add(SignUpText);
-        add(userIDTextBox);
-        add(userNameTextBox);
-        add(userMobileTextBox);
-        add(userPasswordTextBox);
-        add(userConfirmPasswordTextBox);
-        add(dropdown);
-        add(submitButton);
-        add(backButton);
-        add(contentBox);
-        add(backgroundImageSetter);
-
+            if (rs.next()) {
+                warehouseId = rs.getString("Warehouse_ID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return warehouseId;
     }
+    
     
 }
