@@ -3,6 +3,7 @@ package Interfaces;
 //Imports
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -51,7 +52,7 @@ public class SignupScreen extends JFrame{
         Image resizedLogoImage = logoSet.getScaledInstance(400, 200, Image.SCALE_SMOOTH);
         ImageIcon logoImage = new ImageIcon(resizedLogoImage);
         JLabel logoImageSetter = new JLabel(logoImage);
-        logoImageSetter.setBounds(60, 50, 400, 200);
+        logoImageSetter.setBounds(60, 20, 400, 200);
 
         //JPanel for Context Box
         JPanel contentBox = new JPanel();
@@ -60,43 +61,55 @@ public class SignupScreen extends JFrame{
 
         //JLabel For Login Text
         JLabel SignUpText = new JLabel("Sign-up");
-        SignUpText.setBounds(170, 210, 150, 100);
+        SignUpText.setBounds(170, 140, 150, 100);
         SignUpText.setForeground(Color.black);
         SignUpText.setFont(new Font("Arial", Font.BOLD, 30));
 
         //Text Fields Defined for UserName
         JTextField userNameTextBox = new JTextField("Enter your Name");
-        userNameTextBox.setBounds(140, 320, 180, 40);
+        userNameTextBox.setBounds(140, 300, 180, 40);
         userNameTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         //Text Fields Defined for Password
         JTextField userMobileTextBox = new JTextField("Enter your Mobile Number");
-        userMobileTextBox.setBounds(140, 380, 180, 40);
+        userMobileTextBox.setBounds(140, 360, 180, 40);
         userMobileTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         //Text Fields Defined for Password
         JTextField userPasswordTextBox = new JTextField("Enter a Password");
-        userPasswordTextBox.setBounds(140, 440, 180, 40);
+        userPasswordTextBox.setBounds(140, 420, 180, 40);
         userPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         //Text Fields Defined for Confirm Password
         JTextField userConfirmPasswordTextBox = new JTextField("Confirm Password");
-        userConfirmPasswordTextBox.setBounds(140, 500, 180, 40);
+        userConfirmPasswordTextBox.setBounds(140, 480, 180, 40);
         userConfirmPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
         
          //Buttons defined for Submit
         JButton submitButton = new JButton("Submit");
-        submitButton.setBounds(245, 560, 100, 40);
+        submitButton.setBounds(245, 590, 100, 40);
         submitButton.setBackground(new Color(166, 164, 164));
         submitButton.setForeground(Color.white);
         submitButton.setFont(new Font("Arial", Font.BOLD, 16));
 
         //Buttons defined for Back
         JButton backButton = new JButton("Back");
-        backButton.setBounds(120, 560, 100, 40);
+        backButton.setBounds(120, 590, 100, 40);
         backButton.setBackground(new Color(166, 164, 164));
         backButton.setForeground(Color.white);
         backButton.setFont(new Font("Arial", Font.BOLD, 16));
+
+        //Text Fields Defined for UserID
+        JTextField userIDTextBox = new JTextField("Enter User ID");
+        userIDTextBox.setBounds(140, 240, 180, 40);
+        userIDTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
+
+        // Create a dropdown list for Warehouse Type
+        String[] options = {"Kandy_Warehouse", "Colombo_Warehouse", "Jaffna_Warehouse"};
+        JComboBox<String> dropdown = new JComboBox<>(options);
+        dropdown.setBounds(140, 540, 180, 40);
+        dropdown.setBackground(Color.WHITE);
+
 
         // Add a FocusListener for userNameTextBox
         userNameTextBox.addFocusListener(new FocusListener() {
@@ -240,10 +253,12 @@ public class SignupScreen extends JFrame{
         //Add Elements to the Frame
         add(logoImageSetter);
         add(SignUpText);
+        add(userIDTextBox);
         add(userNameTextBox);
         add(userMobileTextBox);
         add(userPasswordTextBox);
         add(userConfirmPasswordTextBox);
+        add(dropdown);
         add(submitButton);
         add(backButton);
         add(contentBox);
