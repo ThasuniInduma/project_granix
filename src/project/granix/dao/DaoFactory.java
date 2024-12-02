@@ -7,6 +7,7 @@ package dao;
 import dao.custom.impl.buyerDaoImpl;
 import dao.custom.impl.stockDaoImpl;
 import dao.custom.impl.userDaoImpl;
+import dao.custom.impl.warehouseDaoImpl;
 
 
 /**
@@ -33,7 +34,8 @@ public class DaoFactory {
                 return new buyerDaoImpl(); 
             case STOCK:
                 return new stockDaoImpl();
-            
+            case WAREHOUSE:
+                return new warehouseDaoImpl();
             default:
                 return null;
         }
@@ -41,6 +43,6 @@ public class DaoFactory {
 
     
     public enum DaoTypes{
-        EMPLOYEE,BUYER,STOCK
+        EMPLOYEE,BUYER,STOCK,WAREHOUSE
     }
 }

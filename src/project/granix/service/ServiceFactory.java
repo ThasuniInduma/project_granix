@@ -4,9 +4,12 @@
  */
 package service;
 
+import controller.warehouseController;
+import dao.custom.impl.warehouseDaoImpl;
 import service.custom.impl.buyerServiceImpl;
 import service.custom.impl.stockServiceImpl;
 import service.custom.impl.userServiceImpl;
+import service.custom.impl.warehouseServiceImpl;
 
 
 
@@ -28,8 +31,8 @@ public class ServiceFactory {
     }
     public SuperService getService(ServiceType type){
         switch(type){
-            //case STOCK:
-            ///    return new stockServiceImpl();
+            case WAREHOUSE:
+                return new warehouseServiceImpl();
             case BUYER:
                 return new buyerServiceImpl();
             case EMPLOYEE:
@@ -43,6 +46,6 @@ public class ServiceFactory {
 
     
     public enum ServiceType{
-        EMPLOYEE,BUYER,STOCK//,ITEM,MANAGE
+        EMPLOYEE,BUYER,STOCK,WAREHOUSE//,ITEM,MANAGE
     }
 }

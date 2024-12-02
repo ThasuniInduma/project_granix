@@ -6,12 +6,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,13 +23,35 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import org.w3c.dom.events.MouseEvent;
+
 //Java Class Imports
 
 import Interfaces.AddNewWarehouses;
+import controller.stockController;
+import controller.warehouseController;
+import dto.stockDto;
+import dto.warehouseDto;
 
 
 public class AddNewWarehouses extends JFrame{
+
+    private JTextField WarehouseIDTextBox;
+    private JTextField WarehouseNameTextBox;
+    private JTextField WarehouseTelTextBox;
+    private JTextField warehouseLocationTextField;
+    private JTextField WarehouseCapacity;
+
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
+    private warehouseController warehouseController;
+
+
     public AddNewWarehouses(){
+
+        warehouseController = new warehouseController();
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -128,52 +154,51 @@ public class AddNewWarehouses extends JFrame{
         logoutButton.setBorder(border);
 
         //TextBox defined for WarehouseID
-        JTextField WarehouseIDTextBox = new JTextField("Enter Warehouse ID");
+        WarehouseIDTextBox = new JTextField("Enter Warehouse ID");
         WarehouseIDTextBox.setBounds(360, 140, 240, 40);
         WarehouseIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //TextBox defined for WarehouseName
-        JTextField WarehouseNameTextBox = new JTextField("Enter Warehouse Name");
+        WarehouseNameTextBox = new JTextField("Enter Warehouse Name");
         WarehouseNameTextBox.setBounds(620, 140, 240, 40);
         WarehouseNameTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //TextBox defined for StockName
-        JTextField WarehouseTelTextBox = new JTextField("Enter Warehouse Tel.");
+        WarehouseTelTextBox = new JTextField("Enter Warehouse Tel.");
         WarehouseTelTextBox.setBounds(360, 200, 240, 40);
         WarehouseTelTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
         
 
-        JTextField warehouseLocationTextField = new JTextField("Enter Warehouse Location");
+        warehouseLocationTextField = new JTextField("Enter Warehouse Location");
         warehouseLocationTextField.setBounds(620, 200, 240, 40);
         warehouseLocationTextField.setFont(new Font("Arial", Font.ITALIC, 20));
 
-        JTextField WarehouseCapacity = new JTextField("Enter Warehouse maximum Capacity");
+        WarehouseCapacity = new JTextField("Enter Warehouse maximum Capacity");
         WarehouseCapacity.setBounds(360, 260, 500, 40);
         WarehouseCapacity.setFont(new Font("Arial", Font.ITALIC, 20));
 
 
         //Save Warehouse button
         JButton saveItemButton = new JButton("Add Warehouse");
-        saveItemButton.setBounds(500, 320, 200, 50);
+        saveItemButton.setBounds(360, 320, 200, 50);
         saveItemButton.setBackground(new Color(237, 235, 235));
         saveItemButton.setForeground(Color.BLACK);
         saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
         saveItemButton.setBorder(border);
 
 
-        //Table Column Headings Defined
-        String []columnNames = {"Warehouse ID", "Name", "Tel"};
-        Object[][] StoreArray = {
-            {"G001", "Rice",   104582400},
-            {"G002", "Barley", 501254700},
-            {"G003", "Corn",   780054542}
-        };
+        JButton updateItemButton = new JButton("Update Warehouse");
+        updateItemButton.setBounds(620, 320, 200, 50);
+        updateItemButton.setBackground(new Color(237, 235, 235));
+        updateItemButton.setForeground(Color.BLACK);
+        updateItemButton.setFont(new Font("Arial", Font.BOLD, 20));
+        updateItemButton.setBorder(border);
 
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -185,11 +210,6 @@ public class AddNewWarehouses extends JFrame{
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
 
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(30); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        
 
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
@@ -249,6 +269,38 @@ public class AddNewWarehouses extends JFrame{
             }
         });
 
+        WarehouseCapacity.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Add Focus
+                WarehouseCapacity.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Lose Focus
+                if (WarehouseCapacity.getText().isEmpty()) {
+                    WarehouseCapacity.setText("Enter Warehouse maximum Capacity");
+                }
+            }
+        });
+
+        warehouseLocationTextField.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Add Focus
+                warehouseLocationTextField.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Lose Focus
+                if (warehouseLocationTextField.getText().isEmpty()) {
+                    warehouseLocationTextField.setText("Enter Warehouse Location");
+                }
+            }
+        });
+
         //Event actions defined for Dashboard Button
         dashBoardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -297,6 +349,37 @@ public class AddNewWarehouses extends JFrame{
             }
         });
 
+        saveItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                try {
+                    addWarehouse();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+        updateItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                
+                try {
+                    updateWarehouse();
+                } catch (Exception e1) {
+                    
+                    e1.printStackTrace();
+                }
+                
+            }
+        });
+        viewTable.addMouseListener(new java.awt.event.MouseAdapter() {
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        tableMouseCliked(evt);
+                    }
+
+                    private void tableMouseCliked(java.awt.event.MouseEvent evt) {
+                        searchWarehouse();
+                    }
+        });
+
         //Add Elements to the Frame
         add(logoImageSetter);
         add(titleLabel);
@@ -312,13 +395,97 @@ public class AddNewWarehouses extends JFrame{
         add(saveItemButton);
         add(warehouseLocationTextField);
         add(WarehouseCapacity);
+        add(updateItemButton);
 
         add(scrollPane);
         add(titleBox);
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
+
+        loadallWarehouse();
     } 
 
+
+    private void addWarehouse() throws Exception {
+                try {
+                    warehouseDto warehouseDto = new warehouseDto(WarehouseIDTextBox.getText(), WarehouseNameTextBox.getText(), Double.parseDouble(WarehouseCapacity.getText()),warehouseLocationTextField.getText(),WarehouseTelTextBox.getText());
+                    
+                    String result = warehouseController.addWarehouse(warehouseDto);
+                    JOptionPane.showConfirmDialog(this, result);
+                    Clear();
+                    loadallWarehouse();
+                    } catch (Exception ex) {
+                        Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+            }
+            private void Clear() {
+                WarehouseIDTextBox.setText("");
+                WarehouseNameTextBox.setText("");
+                WarehouseCapacity.setText("");
+                warehouseLocationTextField.setText("");
+                WarehouseTelTextBox.setText("");
+
+            }
+            private void loadallWarehouse() {
+                try {
+                    String[] columns = {"Warehouse_ID", "Warehouse_name", "Max_Capacity", "Location","Warehouse_Telephone"};
+                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    viewTable.setModel(dtm);
+            
+                    ArrayList<warehouseDto> warehouses = warehouseController.getAllWarehouse();
+                    for (warehouseDto warehouse : warehouses) {
+                        Object[] rowData = {
+                            warehouse.getWarehouse_ID(),
+                            warehouse.getWarehouse_name(),
+                            warehouse.getMax_Capacity(),
+                            warehouse.getLocation(),
+                            warehouse.getWarehouse_Telephone()
+                        };
+                        dtm.addRow(rowData);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            private void updateWarehouse() {
+                try {
+                    warehouseDto warehouseDto = new warehouseDto(WarehouseIDTextBox.getText(), WarehouseNameTextBox.getText(),Double.parseDouble(WarehouseCapacity.getText()),warehouseLocationTextField.getText(), WarehouseTelTextBox.getText());
+                    String result = warehouseController.updateWarehouse(warehouseDto);
+                    JOptionPane.showMessageDialog(this, result);
+                    Clear();
+                    loadallWarehouse();
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            private void searchWarehouse() {
+                try {
+                    String warehouseId = viewTable.getValueAt(viewTable.getSelectedRow(), 0).toString();
+                    warehouseDto warehouseDto = warehouseController.getWarehouse(warehouseId);
+
+                    if (warehouseDto != null) {
+                        WarehouseIDTextBox.setText(warehouseDto.getWarehouse_ID());
+                        WarehouseNameTextBox.setText(warehouseDto.getWarehouse_name());
+                        WarehouseCapacity.setText(String.valueOf(warehouseDto.getMax_Capacity()));
+                        warehouseLocationTextField.setText(warehouseDto.getLocation());
+                        WarehouseTelTextBox.setText(warehouseDto.getWarehouse_Telephone());;
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Warehouse Not Found");
+                    }
+
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
 
 }
