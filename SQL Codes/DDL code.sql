@@ -9,7 +9,9 @@ CREATE TABLE warehouse (
     Warehouse_ID CHAR(5) NOT NULL PRIMARY KEY,
     Warehouse_name VARCHAR(45) NOT NULL,
     Max_Capacity INT NOT NULL,
-    Location VARCHAR(45) NOT NULL
+    Location VARCHAR(45) NOT NULL,
+    Warehouse_Telephone VARCHAR(15) NOT NULL
+
 );
 
 /* Create Employee Table */
@@ -28,34 +30,19 @@ CREATE TABLE employee (
 CREATE TABLE stock (
     Stock_ID CHAR(5) NOT NULL PRIMARY KEY,
     Stock_name VARCHAR(45) NOT NULL,
-    Stock_type VARCHAR(45) NOT NULL,
-    Quantity INT DEFAULT 0,
-    Total_Availability INT DEFAULT 0
+    Quantity DECIMAL(10, 2) DEFAULT 0,
+    PPU DECIMAL(10, 2) DEFAULT 0
 );
 
 /* Create Buyer Table */
 CREATE TABLE buyer (
     Buyer_ID CHAR(5) NOT NULL PRIMARY KEY,
-    Buyer_name VARCHAR(45) NOT NULL
-);
-
-/* Telephone Numbers for Buyer */
-CREATE TABLE buyer_telephone (
-    Telephone_no_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Buyer_ID CHAR(5) NOT NULL,
-    Telephone_no CHAR(10) NOT NULL,
-    FOREIGN KEY (Buyer_ID) REFERENCES buyer(Buyer_ID)
+    Buyer_name VARCHAR(45) NOT NULL,
+    Buyer_Password VARCHAR(10) NOT NULL,
+    Buyer_Telephone CHAR(10) NOT NULL,
 );
 
 
-
-/* Telephone Numbers for Warehouse */
-CREATE TABLE warehouse_telephone (
-    Telephone_no_ID INT AUTO_INCREMENT PRIMARY KEY,
-    Warehouse_ID CHAR(5) NOT NULL,
-    Telephone_no VARCHAR(15) NOT NULL,
-    FOREIGN KEY (Warehouse_ID) REFERENCES warehouse(Warehouse_ID)
-);
 
 /* Table for Relationship Between Stock and Warehouse (Many-to-Many) */
 CREATE TABLE stock_store (
