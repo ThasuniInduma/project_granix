@@ -23,14 +23,11 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import org.w3c.dom.events.MouseEvent;
 
 //Java Class Imports
 
 import Interfaces.AddNewWarehouses;
-import controller.stockController;
 import controller.warehouseController;
-import dto.stockDto;
 import dto.warehouseDto;
 
 
