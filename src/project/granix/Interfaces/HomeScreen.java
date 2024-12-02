@@ -69,7 +69,7 @@ public class HomeScreen extends JFrame{
         SignUpPageButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 dispose();
-                new SignupScreen().setVisible(true);
+                new LoginScreenBuyer().setVisible(true);
             }
         });
     

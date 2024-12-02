@@ -25,8 +25,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.awt.*;
 
-public class SignupScreen extends JFrame{
-    public SignupScreen(){
+public class SignUpScreenBuyer extends JFrame{
+    public SignUpScreenBuyer(){
         userController userController = new userController();
 
 
@@ -65,7 +65,7 @@ public class SignupScreen extends JFrame{
         contentBox.setBackground(new Color(237, 235, 235));
 
         //JLabel For Login Text
-        JLabel SignUpText = new JLabel("Sign-up for Employee");
+        JLabel SignUpText = new JLabel("Sign-up for Buyer");
         SignUpText.setBounds(170, 140, 300, 100);
         SignUpText.setForeground(Color.black);
         SignUpText.setFont(new Font("Arial", Font.BOLD, 30));
@@ -406,3 +406,4 @@ public class SignupScreen extends JFrame{
     
     
 }
+

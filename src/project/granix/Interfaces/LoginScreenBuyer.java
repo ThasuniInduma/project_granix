@@ -21,12 +21,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.awt.*;
 
-public class LoginScreen extends JFrame {
-    // Declare the UI components
-    private JTextField userIdTextBox;
-    private JPasswordField userPasswordTextBox;
-
-    public LoginScreen() {
+public class LoginScreenBuyer extends JFrame{
+    public LoginScreenBuyer(){
         // JFrame Definitions
         setTitle("Grain Store Management System"); // Title Changed
         setSize(1000, 700);
@@ -61,18 +57,18 @@ public class LoginScreen extends JFrame {
         contentBox.setBackground(new Color(237, 235, 235));
 
         // JLabel For Login Text
-        JLabel loginText = new JLabel("Login for Employees");
+        JLabel loginText = new JLabel("Login  for Buyers");
         loginText.setBounds(170, 210, 200, 100);
         loginText.setForeground(Color.black);
         loginText.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Text Fields Defined for UserId
-        userIdTextBox = new JTextField("Enter your User ID");
+        JTextField userIdTextBox = new JTextField("Enter your User ID");
         userIdTextBox.setBounds(120, 320, 180, 40);
         userIdTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         // Text Fields Defined for Password
-        userPasswordTextBox = new JPasswordField("Enter your Password");
+        JTextField userPasswordTextBox = new JPasswordField("Enter your Password");
         userPasswordTextBox.setBounds(120, 380, 180, 40);
         userPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
@@ -110,10 +106,10 @@ public class LoginScreen extends JFrame {
         noAccountButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 dispose();
-                new SignupScreen().setVisible(true);
+                new SignUpScreenBuyer().setVisible(true);
             }
         });
-
+/* 
         // Event actions defined for Submit Button
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -146,7 +142,7 @@ public class LoginScreen extends JFrame {
                 }
             }
         });
-
+ 
         userPasswordTextBox.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 if (new String(userPasswordTextBox.getPassword()).equals("Enter your Password")) {
@@ -164,7 +160,7 @@ public class LoginScreen extends JFrame {
                 }
             }
         });
-
+*/
         // Add Elements to the Frame
         add(logoImageSetter);
         add(loginText);
@@ -182,7 +178,7 @@ public class LoginScreen extends JFrame {
         new DashboardView().setVisible(true);
         this.dispose();
     }
-
+/* 
     // Method for handling login actions
     public void loginOnAction() throws IOException, SQLException {
         String user = userIdTextBox.getText();
@@ -206,5 +202,7 @@ public class LoginScreen extends JFrame {
                 JOptionPane.showMessageDialog(LoginScreen.this, "Invalid username or password");
             }
         }
-    }
+    }*/
 }
+
+
