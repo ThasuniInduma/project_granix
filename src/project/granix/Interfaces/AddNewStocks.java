@@ -283,7 +283,7 @@ public class AddNewStocks extends JFrame{
                     }
                 });
         
-                StockNameTextBox.addFocusListener(new FocusListener() {
+                ppuTextField.addFocusListener(new FocusListener() {
                     @Override
                     public void focusGained(FocusEvent e) {
                         // Add Focus
@@ -495,7 +495,9 @@ public class AddNewStocks extends JFrame{
                     if (stockDto != null) {
                         StockIDTextBox.setText(stockDto.getStock_ID());
                         StockNameTextBox.setText(stockDto.getStock_name());
-                        
+                        StockQuantityTextBox.setText(String.valueOf(stockDto.getQuantity()));
+                        ppuTextField.setText(String.valueOf(stockDto.getPPU()));
+                        dropdown.setSelectedItem(stockDto.getSector());;
                     } else {
                         JOptionPane.showMessageDialog(this, "Stock Not Found");
                     }
