@@ -7,16 +7,12 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -24,12 +20,8 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-
 public class AddNewStocks extends JFrame{
     public AddNewStocks(){
-
-
-
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -141,26 +133,22 @@ public class AddNewStocks extends JFrame{
         StockNameTextBox.setBounds(620, 160, 240, 40);
         StockNameTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
-        //TextBox defined for StockName
+        //TextBox defined for StockQuantity
         JTextField StockQuantityTextBox = new JTextField("Enter Stock Quantity");
         StockQuantityTextBox.setBounds(360, 220, 240, 40);
         StockQuantityTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
-
-        //TextBox defined for StockName
-        JTextField StockPPUTextBox = new JTextField("Enter Price Per Unit");
-        StockPPUTextBox.setBounds(620, 220, 240, 40);
-        StockPPUTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
         
         //Select Crop store Sector
         String[] options = {"Goverment Sector", "Public Sector"};
         JComboBox<String> dropdown = new JComboBox<>(options);
-        dropdown.setBounds(360, 280, 240, 40);
+        dropdown.setBounds(620, 220, 240, 40);
         dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
         dropdown.setBackground(Color.WHITE);
 
+
         //Save item button
         JButton saveItemButton = new JButton("Add Item");
-        saveItemButton.setBounds(620, 275, 240, 50);
+        saveItemButton.setBounds(620, 300, 200, 50);
         saveItemButton.setBackground(new Color(237, 235, 235));
         saveItemButton.setForeground(Color.BLACK);
         saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -256,29 +244,6 @@ public class AddNewStocks extends JFrame{
             }
         });
 
-        StockPPUTextBox.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                // Add Focus
-                StockPPUTextBox.setText("");
-            }
-
-            @Override
-            public void focusLost(FocusEvent e) {
-                // Lose Focus
-                if (StockPPUTextBox.getText().isEmpty()) {
-                    StockPPUTextBox.setText("Enter Price Per Unit");
-                }
-            }
-        });
-
-        saveItemButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                dispose();
-                
-            }
-        });
-
         //Event actions defined for Dashboard Button
         dashBoardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -327,9 +292,6 @@ public class AddNewStocks extends JFrame{
             }
         });
 
-
-        
-
         //Add Elements to the Frame
         add(logoImageSetter);
         add(titleLabel);
@@ -342,7 +304,6 @@ public class AddNewStocks extends JFrame{
         add(StockIDTextBox);
         add(StockNameTextBox);
         add(StockQuantityTextBox);
-        add(StockPPUTextBox);
         add(saveItemButton);
         add(dropdown);
         add(scrollPane);
@@ -350,10 +311,6 @@ public class AddNewStocks extends JFrame{
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
-
-
-    }
-    
-    
+    } 
 
 }
