@@ -164,7 +164,7 @@ public class ReportGenerate extends JFrame{
 
         //Buttons defined for Report Download
         JButton downloadButton = new JButton("Download Report");
-        downloadButton.setBounds(420, 480, 200, 40);
+        downloadButton.setBounds(420, 500, 200, 40);
         downloadButton.setBackground(new Color(237, 235, 235));
         downloadButton.setForeground(Color.BLACK);
         downloadButton.setFont(new Font("Arial", Font.BOLD, 18));
