@@ -13,6 +13,29 @@ import java.awt.event.ActionListener;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 
+//Java Class Imports
+import Interfaces.AddNewStocks;
+import Interfaces.AddNewWarehouses;
+import Interfaces.DashboardView;
+import Interfaces.GovernmentAvailability;
+import Interfaces.HomeScreen;
+import Interfaces.LoginScreen;
+import Interfaces.LoginScreenBuyer;
+import Interfaces.ManageStocks;
+import Interfaces.ManageBuyers;
+import Interfaces.ManageWarehouse;
+import Interfaces.ModifyWarehouses;
+import Interfaces.ModifyStocks;
+import Interfaces.PrivateAvailability;
+import Interfaces.RemoveExistingStocks;
+import Interfaces.RemoveExistingWarehouses;
+import Interfaces.ReportGenerate;
+import Interfaces.SignupScreen;
+import Interfaces.SignUpScreenBuyer;
+import Interfaces.StockAvailability;
+import Interfaces.StockPurchases;
+import Interfaces.StockSales;
+
 public class ManageWarehouse extends JFrame{
     public ManageWarehouse(){
         //JFrame Definitions
