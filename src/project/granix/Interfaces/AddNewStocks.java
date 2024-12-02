@@ -24,13 +24,10 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.stockController;
-import dto.stockDto;
 
 public class AddNewStocks extends JFrame{
     public AddNewStocks(){
 
-        private stockController stockController;
 
 
         //JFrame Definitions
@@ -163,7 +160,7 @@ public class AddNewStocks extends JFrame{
 
         //Save item button
         JButton saveItemButton = new JButton("Add Item");
-        saveItemButton.setBounds(360, 300, 200, 50);
+        saveItemButton.setBounds(620, 275, 240, 50);
         saveItemButton.setBackground(new Color(237, 235, 235));
         saveItemButton.setForeground(Color.BLACK);
         saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -278,7 +275,7 @@ public class AddNewStocks extends JFrame{
         saveItemButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 dispose();
-                addStock();
+                
             }
         });
 
@@ -356,44 +353,7 @@ public class AddNewStocks extends JFrame{
 
 
     }
-    private void addStock(JTextField StockIDTextBox, JTextField StockNameTextBox, JTextField StockQuantityTextBox, JTextField StockPPUTextBox) throws Exception {
-        String stockID = StockIDTextBox.getText();
-        String stockName = StockNameTextBox.getText();
-        String stockQuantity = StockQuantityTextBox.getText();
-        Double stockPPU = Double.parseDouble(StockPPUTextBox.getText());
-
-        // Validate the inputs
-        if (stockID.isEmpty() || stockName.isEmpty() || stockQuantity.isEmpty() || stockPPU.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
-            return;
-        }
-
-        stockDto stock = new stockDto(stockID, stockName, stockQuantity, stockPPU);
-        String result = stockController.addStock(stock);
-
-        JOptionPane.showMessageDialog(this, result);
-        loadAllStock(); // Reload the stock list
-        clearFields(StockIDTextBox, StockNameTextBox, StockQuantityTextBox, StockPPUTextBox); // Clear fields
-    }
-
-    // Clear fields method
-    private void clearFields(JTextField StockIDTextBox, JTextField StockNameTextBox, JTextField StockQuantityTextBox, JTextField StockPPUTextBox) {
-        StockIDTextBox.setText("Enter Stock ID");
-        StockNameTextBox.setText("Enter Stock Name");
-        StockQuantityTextBox.setText("Enter Stock Quantity");
-        StockPPUTextBox.setText("Enter Price Per Unit");
-    }
-
-    // Load all stocks method
-    private void loadAllStock() {
-        try {
-            // Assume stockController.getAllStock() is available to fetch data
-            ArrayList<stockDto> stockList = stockController.getAllStock();
-            // Populate the table with fetched stock data
-        } catch (Exception e) {
-            Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, e);
-            JOptionPane.showMessageDialog(this, "Error loading stock data.");
-        }
-    }
+    
+    
 
 }
