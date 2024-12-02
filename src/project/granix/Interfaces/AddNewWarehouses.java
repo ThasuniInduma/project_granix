@@ -129,22 +129,32 @@ public class AddNewWarehouses extends JFrame{
 
         //TextBox defined for WarehouseID
         JTextField WarehouseIDTextBox = new JTextField("Enter Warehouse ID");
-        WarehouseIDTextBox.setBounds(360, 160, 240, 40);
+        WarehouseIDTextBox.setBounds(360, 140, 240, 40);
         WarehouseIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //TextBox defined for WarehouseName
         JTextField WarehouseNameTextBox = new JTextField("Enter Warehouse Name");
-        WarehouseNameTextBox.setBounds(620, 160, 240, 40);
+        WarehouseNameTextBox.setBounds(620, 140, 240, 40);
         WarehouseNameTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //TextBox defined for StockName
         JTextField WarehouseTelTextBox = new JTextField("Enter Warehouse Tel.");
-        WarehouseTelTextBox.setBounds(360, 220, 240, 40);
+        WarehouseTelTextBox.setBounds(360, 200, 240, 40);
         WarehouseTelTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
         
+
+        JTextField warehouseLocationTextField = new JTextField("Enter Warehouse Location");
+        warehouseLocationTextField.setBounds(620, 200, 240, 40);
+        warehouseLocationTextField.setFont(new Font("Arial", Font.ITALIC, 20));
+
+        JTextField WarehouseCapacity = new JTextField("Enter Warehouse maximum Capacity");
+        WarehouseCapacity.setBounds(360, 260, 500, 40);
+        WarehouseCapacity.setFont(new Font("Arial", Font.ITALIC, 20));
+
+
         //Save Warehouse button
         JButton saveItemButton = new JButton("Add Warehouse");
-        saveItemButton.setBounds(360, 300, 200, 50);
+        saveItemButton.setBounds(500, 320, 200, 50);
         saveItemButton.setBackground(new Color(237, 235, 235));
         saveItemButton.setForeground(Color.BLACK);
         saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -300,6 +310,8 @@ public class AddNewWarehouses extends JFrame{
         add(WarehouseNameTextBox);
         add(WarehouseTelTextBox);
         add(saveItemButton);
+        add(warehouseLocationTextField);
+        add(WarehouseCapacity);
 
         add(scrollPane);
         add(titleBox);

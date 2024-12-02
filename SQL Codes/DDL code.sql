@@ -8,7 +8,7 @@ USE Grain_Management_System;
 CREATE TABLE warehouse (
     Warehouse_ID CHAR(5) NOT NULL PRIMARY KEY,
     Warehouse_name VARCHAR(45) NOT NULL,
-    Max_Capacity INT NOT NULL,
+    Max_Capacity DECIMAL(10, 2) NOT NULL,
     Location VARCHAR(45) NOT NULL,
     Warehouse_Telephone VARCHAR(15) NOT NULL
 
