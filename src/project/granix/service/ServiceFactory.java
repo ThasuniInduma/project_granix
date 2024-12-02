@@ -4,6 +4,7 @@
  */
 package service;
 
+import service.custom.impl.buyerServiceImpl;
 import service.custom.impl.userServiceImpl;
 
 
@@ -28,8 +29,8 @@ public class ServiceFactory {
         switch(type){
             //case STOCK:
             ///    return new stockServiceImpl();
-            /*case ITEM:
-                return new ItemServiceImpl();*/
+            case BUYER:
+                return new buyerServiceImpl();
             case EMPLOYEE:
                 return new userServiceImpl();
             /*case MANAGE:
@@ -41,7 +42,6 @@ public class ServiceFactory {
 
     
     public enum ServiceType{
-        //CUSTOMER, CAR, USER, CATEGORY// ORDER
-        EMPLOYEE//,STOCK//,ITEM,MANAGE
+        EMPLOYEE,BUYER//,STOCK//,ITEM,MANAGE
     }
 }

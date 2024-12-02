@@ -3,7 +3,6 @@ package Interfaces;
 //Imports
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -11,18 +10,15 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-import controller.userController;
-import db.DBConnection;
-import dto.userDto;
+import controller.buyerController;
+import dto.buyerDto;
+
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener; 
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.awt.*;
 
 //Java Class Imports
@@ -33,7 +29,7 @@ import Interfaces.SignUpScreenBuyer;
 
 public class SignUpScreenBuyer extends JFrame{
     public SignUpScreenBuyer(){
-        userController userController = new userController();
+        buyerController buyerController = new buyerController();
 
 
         //JFrame Definitions
@@ -115,12 +111,6 @@ public class SignUpScreenBuyer extends JFrame{
         userIDTextBox.setBounds(140, 240, 180, 40);
         userIDTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
-        // Create a dropdown list for Warehouse Type
-        
-        JComboBox<String> dropdown = new JComboBox<>();
-        dropdown.setBounds(140, 540, 180, 40);
-        dropdown.setBackground(Color.WHITE);
-        fetchWarehouseIDs(dropdown);
         
         
     
@@ -246,14 +236,6 @@ public class SignUpScreenBuyer extends JFrame{
                     }
                 });
                 
-        
-                dropdown.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e) {
-                        String selectedWarehouse = (String) dropdown.getSelectedItem();
-                        String warehouseId = getWarehouseIdByName(selectedWarehouse);
-                        // Use the warehouseId to insert into Employee table
-                    }
-                });
                 
                 
                 //Event actions defined for Submit Button
@@ -269,12 +251,8 @@ public class SignUpScreenBuyer extends JFrame{
                     try {
                         // Get user input
                         String fullName = userNameTextBox.getText().trim();
-                        String[] nameParts = fullName.split(" ");
-                        if (nameParts.length >= 2) {
-                            String firstName = nameParts[0];
-                            String lastName = nameParts[1];
-                            String password = userPasswordTextBox.getText().trim();
-                            String confirmPassword = userConfirmPasswordTextBox.getText().trim();
+                        String password = userPasswordTextBox.getText().trim();
+                        String confirmPassword = userConfirmPasswordTextBox.getText().trim();
                 
                             // Check if passwords match
                             if (!password.equals(confirmPassword)) {
@@ -282,18 +260,11 @@ public class SignUpScreenBuyer extends JFrame{
                                 return;
                             }
                 
-                            // Retrieve warehouse ID from selected warehouse name
-                            String selectedWarehouseName = (String) dropdown.getSelectedItem();
-                            String warehouseId = getWarehouseIdByName(selectedWarehouseName);
-                
-                            if (warehouseId == null || warehouseId.isEmpty()) {
-                                JOptionPane.showMessageDialog(null, "Invalid Warehouse selected.");
-                                return;
-                            }
+                           
                             try{
-                            userDto userDto = new userDto(userIDTextBox.getText(),firstName,lastName,password, warehouseId,userMobileTextBox.getText());
+                            buyerDto buyerDto = new buyerDto(userIDTextBox.getText(),fullName,password,userMobileTextBox.getText());
         
-                            String result = userController.createAccount(userDto);
+                            String result = buyerController.createAccount(buyerDto);
                             JOptionPane.showMessageDialog(null, result);
                             clearFields();
                             dispose(); // Close the current Signup screen
@@ -302,10 +273,7 @@ public class SignUpScreenBuyer extends JFrame{
                             } catch (Exception ex) {
                                 JOptionPane.showMessageDialog(null, "Failed to create Employee account.");
                             }
-                            
-                        } else {
-                            JOptionPane.showMessageDialog(null, "Please enter both first name and last name.");
-                        }
+                        
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage());
                     }
@@ -317,7 +285,6 @@ public class SignUpScreenBuyer extends JFrame{
                 userMobileTextBox.setText("");
                 userPasswordTextBox.setText("");
                 userConfirmPasswordTextBox.setText("");
-                dropdown.setSelectedItem("please select");
             }
                     
                 });
@@ -332,7 +299,6 @@ public class SignUpScreenBuyer extends JFrame{
                 add(userMobileTextBox);
                 add(userPasswordTextBox);
                 add(userConfirmPasswordTextBox);
-                add(dropdown);
                 add(submitButton);
                 add(backButton);
                 add(contentBox);
@@ -349,67 +315,5 @@ public class SignUpScreenBuyer extends JFrame{
         
             }
             
-        
-            private void fetchWarehouseIDs(JComboBox<String> dropdown) {
-                // TODO Auto-generated method stub
-                if (dropdown == null) {
-                    JOptionPane.showMessageDialog(null, "Dropdown is not initialized.");
-                    return;
-                }
-            
-                try {
-                    Connection connection = DBConnection.getInstance().getConnection();
-                    if (connection == null) {
-                        JOptionPane.showMessageDialog(null, "Database connection failed.");
-                        return;
-                    }
-            
-                    String sql = "SELECT warehouse_id, warehouse_name FROM warehouse";  // Assuming warehouse_name exists
-                    PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                    ResultSet resultSet = preparedStatement.executeQuery();
-            
-                    // Clear any previous items in the dropdown
-                    dropdown.removeAllItems();
-                    dropdown.addItem("Please select a warehouse");
-                    // Check if any records are found
-                    boolean found = false;
-                    while (resultSet.next()) {
-                        //String warehouseId = resultSet.getString("warehouse_id");
-                        String warehouseName = resultSet.getString("warehouse_name");
-            
-                        // Add the warehouse name and ID to the dropdown
-                        dropdown.addItem(warehouseName);
-                        found = true;
-                    }
-                    dropdown.setSelectedItem("Please select");
-                    if (!found) {
-                        JOptionPane.showMessageDialog(null, "No warehouses found.");
-                    }
-                } catch (SQLException ex) {
-                    JOptionPane.showMessageDialog(null, "Error fetching warehouse names: " + ex.getMessage());
-                }
-                
-    }
-    // Method to get Warehouse ID based on Warehouse Name
-    public String getWarehouseIdByName(String warehouseName) {
-        String warehouseId = null;
-        try {
-            String query = "SELECT Warehouse_ID FROM Warehouse WHERE Warehouse_Name = ?";
-            Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement pst = connection.prepareStatement(query);
-            pst.setString(1, warehouseName);
-            ResultSet rs = pst.executeQuery();
-            
-            if (rs.next()) {
-                warehouseId = rs.getString("Warehouse_ID");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return warehouseId;
-    }
-    
-    
-    
 }
 
