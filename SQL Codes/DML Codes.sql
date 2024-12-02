@@ -16,7 +16,7 @@ VALUES
 ('E003', 'Sumal', 'Rathnayaka', 'pass789', '0123456789', 'W003');
 
 /* Insert Data into Stock */
-INSERT INTO stock (Stock_ID, Stock_name, Quantity, PPU)
+INSERT INTO stock (Stock_ID, Stock_name, Quantity, PPU, Sector)
 VALUES 
 ('S001', 'Suwadel', 500, 100.50, 'Private Sector'),
 ('S002', 'Kuruluthuda', 300, 120.75,'Private Sector'),
