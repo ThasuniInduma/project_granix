@@ -7,12 +7,16 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +24,15 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
+import controller.stockController;
+import dto.stockDto;
+
 public class AddNewStocks extends JFrame{
     public AddNewStocks(){
+
+        private stockController stockController;
+
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -137,11 +148,16 @@ public class AddNewStocks extends JFrame{
         JTextField StockQuantityTextBox = new JTextField("Enter Stock Quantity");
         StockQuantityTextBox.setBounds(360, 220, 240, 40);
         StockQuantityTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
+
+        //TextBox defined for StockName
+        JTextField StockPPUTextBox = new JTextField("Enter Price Per Unit");
+        StockPPUTextBox.setBounds(620, 220, 240, 40);
+        StockPPUTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
         
         //Select Crop store Sector
         String[] options = {"Goverment Sector", "Public Sector"};
         JComboBox<String> dropdown = new JComboBox<>(options);
-        dropdown.setBounds(620, 220, 240, 40);
+        dropdown.setBounds(360, 280, 240, 40);
         dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
         dropdown.setBackground(Color.WHITE);
 
@@ -243,6 +259,29 @@ public class AddNewStocks extends JFrame{
             }
         });
 
+        StockPPUTextBox.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Add Focus
+                StockPPUTextBox.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Lose Focus
+                if (StockPPUTextBox.getText().isEmpty()) {
+                    StockPPUTextBox.setText("Enter Price Per Unit");
+                }
+            }
+        });
+
+        saveItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                dispose();
+                addStock();
+            }
+        });
+
         //Event actions defined for Dashboard Button
         dashBoardButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
@@ -291,6 +330,9 @@ public class AddNewStocks extends JFrame{
             }
         });
 
+
+        
+
         //Add Elements to the Frame
         add(logoImageSetter);
         add(titleLabel);
@@ -303,6 +345,7 @@ public class AddNewStocks extends JFrame{
         add(StockIDTextBox);
         add(StockNameTextBox);
         add(StockQuantityTextBox);
+        add(StockPPUTextBox);
         add(saveItemButton);
         add(dropdown);
         add(scrollPane);
@@ -310,6 +353,47 @@ public class AddNewStocks extends JFrame{
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
-    } 
+
+
+    }
+    private void addStock(JTextField StockIDTextBox, JTextField StockNameTextBox, JTextField StockQuantityTextBox, JTextField StockPPUTextBox) throws Exception {
+        String stockID = StockIDTextBox.getText();
+        String stockName = StockNameTextBox.getText();
+        String stockQuantity = StockQuantityTextBox.getText();
+        Double stockPPU = Double.parseDouble(StockPPUTextBox.getText());
+
+        // Validate the inputs
+        if (stockID.isEmpty() || stockName.isEmpty() || stockQuantity.isEmpty() || stockPPU.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please fill in all fields.");
+            return;
+        }
+
+        stockDto stock = new stockDto(stockID, stockName, stockQuantity, stockPPU);
+        String result = stockController.addStock(stock);
+
+        JOptionPane.showMessageDialog(this, result);
+        loadAllStock(); // Reload the stock list
+        clearFields(StockIDTextBox, StockNameTextBox, StockQuantityTextBox, StockPPUTextBox); // Clear fields
+    }
+
+    // Clear fields method
+    private void clearFields(JTextField StockIDTextBox, JTextField StockNameTextBox, JTextField StockQuantityTextBox, JTextField StockPPUTextBox) {
+        StockIDTextBox.setText("Enter Stock ID");
+        StockNameTextBox.setText("Enter Stock Name");
+        StockQuantityTextBox.setText("Enter Stock Quantity");
+        StockPPUTextBox.setText("Enter Price Per Unit");
+    }
+
+    // Load all stocks method
+    private void loadAllStock() {
+        try {
+            // Assume stockController.getAllStock() is available to fetch data
+            ArrayList<stockDto> stockList = stockController.getAllStock();
+            // Populate the table with fetched stock data
+        } catch (Exception e) {
+            Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(this, "Error loading stock data.");
+        }
+    }
 
 }

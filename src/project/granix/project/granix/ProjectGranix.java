@@ -4,7 +4,9 @@
  */
 package project.granix;
 
+import Interfaces.AddNewStocks;
 import Interfaces.HomeScreen;
+import Interfaces.ModifyWarehouses;
 
 /**
  *
@@ -17,7 +19,7 @@ public class ProjectGranix {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new HomeScreen().setVisible(true);
+        new AddNewStocks().setVisible(true);
     }
     
 }
