@@ -6,6 +6,7 @@ package project.granix;
 
 
 import Interfaces.DashboardView;
+import Interfaces.LoginScreenBuyer;
 
 
 
@@ -20,7 +21,7 @@ public class ProjectGranix {
      */
     public static void main(String[] args) {
         // TODO code application logic here
-        new DashboardView().setVisible(true);
+        new LoginScreenBuyer().setVisible(true);
     }
     
 }

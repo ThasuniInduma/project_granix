@@ -9,20 +9,28 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import db.DBConnection;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+import java.io.IOException;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.awt.*;
 
 //Java Class Imports
 
 import Interfaces.LoginScreenBuyer;
+import db.DBConnection;
 
 
 public class LoginScreenBuyer extends JFrame{
+
+    private JTextField userIdTextBox;
+    private JPasswordField userPasswordTextBox;
+
     public LoginScreenBuyer(){
+
         // JFrame Definitions
         setTitle("Grain Store Management System"); // Title Changed
         setSize(1000, 700);
@@ -63,12 +71,12 @@ public class LoginScreenBuyer extends JFrame{
         loginText.setFont(new Font("Arial", Font.BOLD, 24));
 
         // Text Fields Defined for UserId
-        JTextField userIdTextBox = new JTextField("Enter your User ID");
+        userIdTextBox = new JTextField("Enter your User ID");
         userIdTextBox.setBounds(120, 320, 180, 40);
         userIdTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
         // Text Fields Defined for Password
-        JTextField userPasswordTextBox = new JPasswordField("Enter your Password");
+        userPasswordTextBox = new JPasswordField("Enter your Password");
         userPasswordTextBox.setBounds(120, 380, 180, 40);
         userPasswordTextBox.setFont(new Font("Arial", Font.ITALIC, 13));
 
@@ -109,7 +117,7 @@ public class LoginScreenBuyer extends JFrame{
                 new SignUpScreenBuyer().setVisible(true);
             }
         });
-/* 
+ 
         // Event actions defined for Submit Button
         submitButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -160,7 +168,7 @@ public class LoginScreenBuyer extends JFrame{
                 }
             }
         });
-*/
+
         // Add Elements to the Frame
         add(logoImageSetter);
         add(loginText);
@@ -178,18 +186,18 @@ public class LoginScreenBuyer extends JFrame{
         new DashboardView().setVisible(true);
         this.dispose();
     }
-/* 
+ 
     // Method for handling login actions
     public void loginOnAction() throws IOException, SQLException {
-        String user = userIdTextBox.getText();
+         String user = userIdTextBox.getText();
         String pw = String.valueOf(userPasswordTextBox.getPassword());
 
         PreparedStatement ps;
         ResultSet rst;
 
-        String query = "SELECT * FROM employee WHERE Employee_ID = ? AND User_Password = ?";
+        String query = "SELECT * FROM BUYER WHERE Buyer_ID = ? AND Buyer_Password = ?";
 
-        if (user.trim().toLowerCase().equals("Employee_ID") || pw.trim().toLowerCase().equals("User_Password")) {
+        if (user.trim().toLowerCase().equals("Buyer_ID") || pw.trim().toLowerCase().equals("Buyer_Password")) {
             System.out.println("Enter a valid username & password");
         } else {
             ps = DBConnection.getInstance().getConnection().prepareStatement(query);
@@ -199,10 +207,10 @@ public class LoginScreenBuyer extends JFrame{
             if (rst.next()) {
                 loadDashboard();
             } else {
-                JOptionPane.showMessageDialog(LoginScreen.this, "Invalid username or password");
+                JOptionPane.showMessageDialog(LoginScreenBuyer.this, "Invalid username or password");
             }
         }
-    }*/
+    }
 }
 
 
