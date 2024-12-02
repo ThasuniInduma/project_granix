@@ -5,6 +5,7 @@
 package project.granix;
 
 
+import Interfaces.AddNewStocks;
 import Interfaces.DashboardView;
 import Interfaces.LoginScreenBuyer;
 import Interfaces.SignUpScreenBuyer;
@@ -21,8 +22,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        new SignUpScreenBuyer().setVisible(true);
+        new AddNewStocks().setVisible(true);
     }
     
 }

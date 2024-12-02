@@ -18,9 +18,9 @@ VALUES
 /* Insert Data into Stock */
 INSERT INTO stock (Stock_ID, Stock_name, Quantity, PPU)
 VALUES 
-('S001', 'Suwadel', 500, 100.50),
-('S002', 'Kuruluthuda', 300, 120.75),
-('S003', 'Samba', 200, 90.00);
+('S001', 'Suwadel', 500, 100.50, 'Private Sector'),
+('S002', 'Kuruluthuda', 300, 120.75,'Private Sector'),
+('S003', 'Samba', 200, 90.00, 'Government Sector');
 
 /* Insert Data into Buyer */
 INSERT INTO buyer (Buyer_ID, Buyer_name, Buyer_Password, Buyer_Telephone)

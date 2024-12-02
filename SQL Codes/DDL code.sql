@@ -31,7 +31,8 @@ CREATE TABLE stock (
     Stock_ID CHAR(5) NOT NULL PRIMARY KEY,
     Stock_name VARCHAR(45) NOT NULL,
     Quantity DECIMAL(10, 2) DEFAULT 0,
-    PPU DECIMAL(10, 2) DEFAULT 0
+    PPU DECIMAL(10, 2) DEFAULT 0,
+    Sector varchar(45) Not null
 );
 
 /* Create Buyer Table */
