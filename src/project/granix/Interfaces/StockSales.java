@@ -9,12 +9,8 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableModel;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
@@ -41,9 +37,6 @@ public class StockSales extends JFrame{
     private JComboBox<String> dropdown2;
     private JTextField BuyerIDTextBox;
     private JTextField StockQuantityTextBox;
-    
-    private JTable viewTable;
-    private DefaultTableModel dtm;
 
     private salesController salesController;
 
@@ -182,33 +175,6 @@ public class StockSales extends JFrame{
         StockQuantityTextBox = new JTextField("Enter Stock Quantity");
         StockQuantityTextBox.setBounds(360, 220, 240, 40);
         StockQuantityTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
-
-        
-
-        // Create a table model
-        dtm = new DefaultTableModel();
-
-        // Create a JTable using the model
-        viewTable = new JTable(dtm);
-
-        //Table Appearance Customizations
-        viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
-        viewTable.setRowHeight(30);
-        viewTable.setBackground(new Color(237, 235, 235));
-        viewTable.setForeground(Color.BLACK);
-        viewTable.setGridColor(Color.DARK_GRAY);
-        viewTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
-        viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
-        viewTable.getTableHeader().setForeground(Color.WHITE);
-
-    
-        
-        // Add the table to a JScrollPane for scroll functionality
-        JScrollPane scrollPane = new JScrollPane(viewTable);
-        scrollPane.setBounds(300, 390, 600, 150);
-        scrollPane.setBackground(new Color(237, 235, 235));
-        scrollPane.getViewport().setBackground(new Color(237, 235, 235));
-        scrollPane.setBorder(new EmptyBorder(0,0,0,0));
         
 
         //Event actions defined for Dashboard Button
@@ -315,7 +281,6 @@ public class StockSales extends JFrame{
 
         add(StockQuantityTextBox);
         add(BuyerIDTextBox);
-        add(scrollPane);
         add(titleBox);
         add(menuBox);
         //add(bodyBox);
