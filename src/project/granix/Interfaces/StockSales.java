@@ -7,6 +7,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,6 +15,8 @@ import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -22,16 +25,35 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //Java Class Imports
 import Interfaces.StockSales;
+import controller.salesController;
+import controller.stockController;
 import db.DBConnection;
+import dto.salesdto;
+import dto.stockDto;
+import dto.warehouseDto;
 
 public class StockSales extends JFrame{
 
     private JComboBox<String> dropdown;
+    private JComboBox<String> dropdown2;
+    private JTextField BuyerIDTextBox;
+    private JTextField StockQuantityTextBox;
+    
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
+    private salesController salesController;
 
     public StockSales(){
+
+        salesController = new salesController();
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -139,37 +161,45 @@ public class StockSales extends JFrame{
         dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
         dropdown.setBackground(Color.WHITE);
 
+        //Select Warehouse Name
+        dropdown2 = new JComboBox<>();
+        dropdown2.setBounds(620, 220, 240, 40);
+        dropdown2.setFont(new Font("Arial", Font.ITALIC, 20));
+        dropdown2.setBackground(Color.WHITE);
+
         //TextBox defined for StockId
-        JTextField BuyerIDTextBox = new JTextField("Enter Buyer ID");
+        BuyerIDTextBox = new JTextField("Enter Buyer ID");
         BuyerIDTextBox.setBounds(620, 160, 240, 40);
         BuyerIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //Add Item Button
-        JButton addStockButton = new JButton("Sell Stocks");
-        addStockButton.setBounds(360, 300, 200, 50);
+        JButton addStockButton = new JButton("Add to Order");
+        addStockButton.setBounds(360, 300, 240, 50);
         addStockButton.setBackground(new Color(237, 235, 235));
         addStockButton.setForeground(Color.BLACK);
         addStockButton.setFont(new Font("Arial", Font.BOLD, 20));
         addStockButton.setBorder(border);
 
+        //Add Item Button
+        JButton updateStockButton = new JButton("Update Order");
+        updateStockButton.setBounds(620, 300, 240, 50);
+        updateStockButton.setBackground(new Color(237, 235, 235));
+        updateStockButton.setForeground(Color.BLACK);
+        updateStockButton.setFont(new Font("Arial", Font.BOLD, 20));
+        updateStockButton.setBorder(border);
+
         //TextBox defined for StockQuantity
-        JTextField StockQuantityTextBox = new JTextField("Enter Stock Quantity");
+        StockQuantityTextBox = new JTextField("Enter Stock Quantity");
         StockQuantityTextBox.setBounds(360, 220, 240, 40);
         StockQuantityTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
-        //Table Column Headings Defined
-        String []columnNames = {"Item ID", "Name", "Quantity (kgs)", "PPUs"};
-        Object[][] StoreArray = {
-            {"G001", "Rice", 10400, 250},
-            {"G002", "Barley", 5000, 300},
-            {"G003", "Corn", 7800, 400}
-        };
+        
 
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -181,11 +211,7 @@ public class StockSales extends JFrame{
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
 
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(30); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(3).setPreferredWidth(30);
+    
         
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
@@ -242,6 +268,47 @@ public class StockSales extends JFrame{
                 new HomeScreen().setVisible(true);
             }
         });
+        StockQuantityTextBox.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Add Focus
+                StockQuantityTextBox.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Lose Focus
+                if (StockQuantityTextBox.getText().isEmpty()) {
+                    StockQuantityTextBox.setText("Enter Stock Quantity");
+                }
+            }
+        });
+        BuyerIDTextBox.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                // Add Focus
+                BuyerIDTextBox.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                // Lose Focus
+                if (BuyerIDTextBox.getText().isEmpty()) {
+                    BuyerIDTextBox.setText("Enter Buyer ID");
+                }
+            }
+        });
+
+        addStockButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                //addToOrder();
+            }
+        });
+        updateStockButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                //updateOrder();
+            }
+        });
 
         
         //Add Elements to the Frame
@@ -254,7 +321,10 @@ public class StockSales extends JFrame{
         add(manageWarehouseButton);
         add(logoutButton);
         add(dropdown);
+        add(dropdown2);
         add(addStockButton);
+        add(updateStockButton);
+
         add(StockQuantityTextBox);
         add(BuyerIDTextBox);
         add(scrollPane);
@@ -264,9 +334,11 @@ public class StockSales extends JFrame{
         add(backgroundImageSetter);
 
         loadStocks();
+        loadWarehouse();
+        loadOrders();
     } 
 
-    private void loadStocks() {
+            private void loadStocks() {
                 dropdown.removeAllItems();
                 try {
                     String query = "SELECT Stock_name FROM stock";
@@ -279,6 +351,91 @@ public class StockSales extends JFrame{
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
+            }
+            private void loadWarehouse() {
+                dropdown2.removeAllItems();
+                try {
+                    String query = "SELECT Warehouse_name FROM warehouse";
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    PreparedStatement pst = connection.prepareStatement(query);
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        dropdown2.addItem(rs.getString("Warehouse_name")); // Add each type
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            private void loadOrders() {
+                try {
+                    String[] columns = {"Stock_ID", "Quantity"};
+                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    viewTable.setModel(dtm);
+            
+                    ArrayList<salesdto> sales = salesController.getAllsales();
+                    for (salesdto sale : sales) {
+                        Object[] rowData = {
+                            sale.getStock_ID(),
+                            sale.getQuantity_obtained()
+                            
+                        };
+                        dtm.addRow(rowData);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            private void addToOrder() throws Exception {
+                try {
+                    //salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),dropdown2.getSelectedItem().toString());
+                    
+                    //String result = salesController.addsales(salesdto);
+                    //JOptionPane.showConfirmDialog(this, result);
+                    Clear();
+                    loadOrders();
+                    } catch (Exception ex) {
+                        Logger.getLogger(AddNewWarehouses.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(this, ex.getMessage());
+                    }
+            }
+            public String getIdByName(String name) {
+                String id = null;
+                try {
+                    // Establish database connection
+                    Connection connection = DBConnection.getInstance().getConnection();
+            
+                    // SQL query to get the ID based on the name
+                    String query = "SELECT Stock_ID FROM stock WHERE Stock_name = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+            
+                    // Set the name parameter
+                    preparedStatement.setString(1, name);
+            
+                    // Execute the query
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            
+                    // Retrieve the ID if a record is found
+                    if (resultSet.next()) {
+                        id = resultSet.getString("Stock_ID");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error retrieving ID by name: " + e.getMessage());
+                }
+                return id; // Returns null if no record is found
+            }
+            private void Clear() {
+                BuyerIDTextBox.setText("");
+                StockQuantityTextBox.setText("");
+                dropdown.setSelectedItem("Please Select");
+                dropdown2.setSelectedItem("Please Select");;
+
             }
 }
 

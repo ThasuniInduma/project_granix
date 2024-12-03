@@ -5,6 +5,7 @@
 package service;
 
 import service.custom.impl.buyerServiceImpl;
+import service.custom.impl.salesServiceImpl;
 import service.custom.impl.stockServiceImpl;
 import service.custom.impl.userServiceImpl;
 import service.custom.impl.warehouseServiceImpl;
@@ -37,6 +38,8 @@ public class ServiceFactory {
                 return new userServiceImpl();
             case STOCK:
                 return new stockServiceImpl();
+            case SALES:
+                return new salesServiceImpl();
             default:
                 return null;
         }
@@ -44,6 +47,6 @@ public class ServiceFactory {
 
     
     public enum ServiceType{
-        EMPLOYEE,BUYER,STOCK,WAREHOUSE//,ITEM,MANAGE
+        EMPLOYEE,BUYER,STOCK,WAREHOUSE,SALES
     }
 }

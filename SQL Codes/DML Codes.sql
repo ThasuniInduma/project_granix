@@ -39,6 +39,6 @@ VALUES
 /* Insert Data into Stock Obtain (Relationship Between Stock and Buyer) */
 INSERT INTO stock_obtain (Stock_ID, Buyer_ID, Quantity_obtained, Obtain_Date)
 VALUES 
-('S001', 'B001', 100, '2024-11-01'),
-('S002', 'B002', 150, '2024-11-05'),
-('S003', 'B003', 50, '2024-11-10');
+('S001', 'B001', 100, 'W001'),
+('S002', 'B002', 150, 'W002'),
+('S003', 'B003', 50, 'W003');

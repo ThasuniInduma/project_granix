@@ -60,7 +60,7 @@ CREATE TABLE stock_obtain (
     Stock_ID CHAR(5) NOT NULL,
     Buyer_ID CHAR(5) NOT NULL,
     Quantity_obtained INT NOT NULL,
-    Obtain_Date DATE NOT NULL,
+    Warehouse_ID varchar(45) Not null,
     PRIMARY KEY (Stock_ID, Buyer_ID),
     FOREIGN KEY (Stock_ID) REFERENCES stock(Stock_ID),
     FOREIGN KEY (Buyer_ID) REFERENCES buyer(Buyer_ID)

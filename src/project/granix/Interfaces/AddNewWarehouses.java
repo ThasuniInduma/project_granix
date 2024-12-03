@@ -402,7 +402,7 @@ public class AddNewWarehouses extends JFrame{
             }
 
 
-    private void addWarehouse() throws Exception {
+            private void addWarehouse() throws Exception {
                 try {
                     warehouseDto warehouseDto = new warehouseDto(WarehouseIDTextBox.getText(), WarehouseNameTextBox.getText(), Double.parseDouble(WarehouseCapacity.getText()),warehouseLocationTextField.getText(),WarehouseTelTextBox.getText(),dropdown.getSelectedItem().toString());
                     
