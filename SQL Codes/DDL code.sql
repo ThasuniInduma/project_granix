@@ -10,8 +10,9 @@ CREATE TABLE warehouse (
     Warehouse_name VARCHAR(45) NOT NULL,
     Max_Capacity DECIMAL(10, 2) NOT NULL,
     Location VARCHAR(45) NOT NULL,
-    Warehouse_Telephone VARCHAR(15) NOT NULL
-
+    Warehouse_Telephone VARCHAR(15) NOT NULL,
+	Qty DECIMAL(10, 2) NOT NULL,
+    Sector VARCHAR(45) NOT NULL
 );
 
 /* Create Employee Table */

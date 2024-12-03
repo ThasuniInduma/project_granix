@@ -17,12 +17,20 @@ import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 //Java Class Imports
 import Interfaces.StockSales;
+import db.DBConnection;
 
 public class StockSales extends JFrame{
+
+    private JComboBox<String> dropdown;
+
     public StockSales(){
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
@@ -126,8 +134,7 @@ public class StockSales extends JFrame{
         logoutButton.setBorder(border);
 
         //Select Crop Name
-        String[] options = {"Rice", "Wheat"};
-        JComboBox<String> dropdown = new JComboBox<>(options);
+        dropdown = new JComboBox<>();
         dropdown.setBounds(360, 160, 240, 40);
         dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
         dropdown.setBackground(Color.WHITE);
@@ -255,7 +262,24 @@ public class StockSales extends JFrame{
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
+
+        loadStocks();
     } 
+
+    private void loadStocks() {
+                dropdown.removeAllItems();
+                try {
+                    String query = "SELECT Stock_name FROM stock";
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    PreparedStatement pst = connection.prepareStatement(query);
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        dropdown.addItem(rs.getString("Stock_name")); // Add each type
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 }
 
 

@@ -2,11 +2,11 @@
 USE Grain_Management_System;
 
 /* Insert Data into Warehouse */
-INSERT INTO warehouse (Warehouse_ID, Warehouse_name, Max_Capacity, Location, Warehouse_Telephone)
+INSERT INTO warehouse (Warehouse_ID, Warehouse_name, Max_Capacity, Location, Warehouse_Telephone, Sector)
 VALUES 
-('W001', 'Kandy_Warehouse', 1000, 'City Center', '0769823541'),
-('W002', 'Colombo_Warehouse', 800, 'Eastside', '0774953684'),
-('W003', 'Jaffna_Warehouse', 600, 'Westside', '0768324951');
+('W001', 'Kandy_Warehouse', 1000, 'City Center', '0769823541', 'Private Sector'),
+('W002', 'Colombo_Warehouse', 800, 'Eastside', '0774953684', 'Government Sector'),
+('W003', 'Jaffna_Warehouse', 600, 'Westside', '0768324951', 'Private Sector');
 
 /* Insert Data into Employee */
 INSERT INTO employee (Employee_ID, First_name, Second_name, User_Password, Telephone, Warehouse_ID)
