@@ -11,12 +11,12 @@ public class stockDaoImpl implements stockDao{
 
     @Override
     public boolean add(stockEntity t) throws Exception {
-        return CrudUtil.executeUpdate("INSERT INTO stock VALUES(?,?,?,?,?)", t.getStock_ID(),t.getStock_name(),t.getQuantity(),t.getPPU(),t.getSector());
+        return CrudUtil.executeUpdate("INSERT INTO stock VALUES(?,?,?,?,?)", t.getStock_ID(),t.getStock_name(),t.getQuantity(),t.getPPU(),t.getWarehouse());
     }
 
     @Override
     public boolean update(stockEntity t) throws Exception {
-        return CrudUtil.executeUpdate("UPDATE stock SET Stock_name = ?, Quantity = ?, PPU = ?, Sector = ? WHERE Stock_ID = ?",t.getStock_name(),t.getQuantity(),t.getPPU(),t.getSector(),t.getStock_ID());
+        return CrudUtil.executeUpdate("UPDATE stock SET Stock_name = ?, Quantity = ?, PPU = ?, Warehouse = ? WHERE Stock_ID = ?",t.getStock_name(),t.getQuantity(),t.getPPU(),t.getWarehouse(),t.getStock_ID());
     }
 
 

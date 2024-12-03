@@ -319,7 +319,7 @@ public class RemoveExistingStocks extends JFrame{
                     if(stock != null){
                         itemNameText.setText(stock.getStock_name());
                     }else{
-                         JOptionPane.showMessageDialog(this, "Item Not Found");
+                         JOptionPane.showMessageDialog(this, "Stock Not Found");
                     }
         
                 } catch (Exception ex) {
@@ -346,7 +346,7 @@ public class RemoveExistingStocks extends JFrame{
             }
             private void loadallStock() {
                 try {
-                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Sector"};
+                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Warehouse"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
@@ -362,7 +362,7 @@ public class RemoveExistingStocks extends JFrame{
                             stock.getStock_name(),
                             stock.getQuantity(),
                             stock.getPPU(),
-                            stock.getSector()
+                            stock.getWarehouse()
                         };
                         dtm.addRow(rowData);
                     }

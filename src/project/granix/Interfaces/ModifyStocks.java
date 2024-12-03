@@ -380,19 +380,19 @@ public class ModifyStocks extends JFrame{
                 add(backgroundImageSetter);
 
                 loadallStock();
-                loadSectors();
+                loadWarehouse();
 
     } 
 
-            private void loadSectors() {
+            private void loadWarehouse() {
                 dropdownType.removeAllItems();
                 try {
-                    String query = "SELECT DISTINCT Sector FROM stock";
+                    String query = "SELECT Warehouse_name FROM warehouse";
                     Connection connection = DBConnection.getInstance().getConnection();
                     PreparedStatement pst = connection.prepareStatement(query);
                     ResultSet rs = pst.executeQuery();
                     while (rs.next()) {
-                        dropdownType.addItem(rs.getString("Sector")); // Add each type
+                        dropdownType.addItem(rs.getString("Warehouse_name")); // Add each type
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -423,7 +423,7 @@ public class ModifyStocks extends JFrame{
             }
             private void loadallStock() {
                 try {
-                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Sector"};
+                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Warehouse"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
@@ -439,7 +439,7 @@ public class ModifyStocks extends JFrame{
                             stock.getStock_name(),
                             stock.getQuantity(),
                             stock.getPPU(),
-                            stock.getSector()
+                            stock.getWarehouse()
                         };
                         dtm.addRow(rowData);
                     }
@@ -461,7 +461,7 @@ public class ModifyStocks extends JFrame{
                         StockNameTextBox.setText(stockDto.getStock_name());
                         StockQuantityTextBox.setText(String.valueOf(stockDto.getQuantity()));
                         ppuTextField.setText(String.valueOf(stockDto.getPPU()));
-                        dropdownType.setSelectedItem(stockDto.getSector());;
+                        dropdownType.setSelectedItem(stockDto.getWarehouse());;
                     } else {
                         JOptionPane.showMessageDialog(this, "Stock Not Found");
                     }

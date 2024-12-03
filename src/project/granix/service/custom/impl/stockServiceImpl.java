@@ -14,7 +14,7 @@ public class stockServiceImpl implements stockService{
 
     @Override
     public String addStock(stockDto dto) throws Exception {
-        stockEntity stockEntity = new stockEntity(dto.getStock_ID(), dto.getStock_name(), dto.getQuantity(), dto.getPPU(), dto.getSector());
+        stockEntity stockEntity = new stockEntity(dto.getStock_ID(), dto.getStock_name(), dto.getQuantity(), dto.getPPU(), dto.getWarehouse());
         
         if(stockDao.add(stockEntity)){
             return "successfully added";
@@ -25,7 +25,7 @@ public class stockServiceImpl implements stockService{
 
     @Override
     public String updateStock(stockDto dto) throws Exception {
-        stockEntity stockEntity = new stockEntity(dto.getStock_ID(), dto.getStock_name(), dto.getQuantity(), dto.getPPU(), dto.getSector());
+        stockEntity stockEntity = new stockEntity(dto.getStock_ID(), dto.getStock_name(), dto.getQuantity(), dto.getPPU(), dto.getWarehouse());
         
         if(stockDao.update(stockEntity)){
             return "successfully updated";
@@ -39,7 +39,7 @@ public class stockServiceImpl implements stockService{
     @Override
     public stockDto getStock(String id) throws Exception {
         stockEntity entity = stockDao.get(id);
-        return new stockDto(entity.getStock_ID(), entity.getStock_name(), entity.getQuantity(), entity.getPPU(), entity.getSector());
+        return new stockDto(entity.getStock_ID(), entity.getStock_name(), entity.getQuantity(), entity.getPPU(), entity.getWarehouse());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class stockServiceImpl implements stockService{
         ArrayList<stockEntity> stockEntitys = stockDao.getAll();
         
         for (stockEntity entity : stockEntitys) {
-            stockDto dto = new stockDto(entity.getStock_ID(), entity.getStock_name(), entity.getQuantity(), entity.getPPU(), entity.getSector());
+            stockDto dto = new stockDto(entity.getStock_ID(), entity.getStock_name(), entity.getQuantity(), entity.getPPU(), entity.getWarehouse());
             stockDtos.add(dto);
         }
         return stockDtos;

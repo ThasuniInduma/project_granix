@@ -373,18 +373,18 @@ public class AddNewStocks extends JFrame{
                 add(backgroundImageSetter);
 
                 loadallStock();
-                loadSectors();
+                loadWarehouse();
             } 
         
-            private void loadSectors() {
+            private void loadWarehouse() {
                 dropdown.removeAllItems();
                 try {
-                    String query = "SELECT DISTINCT Sector FROM stock";
+                    String query = "SELECT Warehouse_name FROM warehouse";
                     Connection connection = DBConnection.getInstance().getConnection();
                     PreparedStatement pst = connection.prepareStatement(query);
                     ResultSet rs = pst.executeQuery();
                     while (rs.next()) {
-                        dropdown.addItem(rs.getString("Sector")); // Add each type
+                        dropdown.addItem(rs.getString("Warehouse_name")); // Add each type
                     }
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -414,7 +414,7 @@ public class AddNewStocks extends JFrame{
             }
             private void loadallStock() {
                 try {
-                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Sector"};
+                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Warehouse"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
@@ -430,7 +430,7 @@ public class AddNewStocks extends JFrame{
                             stock.getStock_name(),
                             stock.getQuantity(),
                             stock.getPPU(),
-                            stock.getSector()
+                            stock.getWarehouse()
                         };
                         dtm.addRow(rowData);
                     }
