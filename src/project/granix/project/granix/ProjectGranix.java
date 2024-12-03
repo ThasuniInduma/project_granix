@@ -8,8 +8,11 @@ package project.granix;
 import Interfaces.AddNewStocks;
 import Interfaces.AddNewWarehouses;
 import Interfaces.DashboardView;
+import Interfaces.GovernmentAvailability;
+import Interfaces.HomeScreen;
 import Interfaces.LoginScreenBuyer;
 import Interfaces.SignUpScreenBuyer;
+import Interfaces.StockAvailability;
 
 
 
@@ -23,7 +26,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new AddNewWarehouses().setVisible(true);
+        new GovernmentAvailability().setVisible(true);
     }
     
 }

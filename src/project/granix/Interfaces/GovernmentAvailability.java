@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -14,16 +15,31 @@ import javax.swing.border.EmptyBorder;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.swing.table.DefaultTableModel;
 
 //Java Class Imports
 
 import Interfaces.GovernmentAvailability;
+import db.DBConnection;
 
 
 public class GovernmentAvailability extends JFrame{
+
+
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
+
     public GovernmentAvailability(){
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -126,19 +142,11 @@ public class GovernmentAvailability extends JFrame{
         logoutButton.setBorder(border);
         
         
-        //Table Column Headings Defined
-        String []columnNames = {"Item ID", "Name", "Quantity (kgs)", "PPUs"};
-        Object[][] StoreArray = {
-            {"G001", "Rice", 10400, 250},
-            {"G002", "Barley", 5000, 300},
-            {"G003", "Corn", 7800, 400}
-        };
-
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -150,13 +158,7 @@ public class GovernmentAvailability extends JFrame{
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
 
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(50); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(50);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(50);
-        viewTable.getColumnModel().getColumn(3).setPreferredWidth(50);
         
-
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
         scrollPane.setBounds(260, 121, 710, 150);
@@ -226,6 +228,44 @@ public class GovernmentAvailability extends JFrame{
         add(menuBox);
         add(bodyBox);
         add(backgroundImageSetter);
+
+        loadallStock();
+
     } 
+
+    private void loadallStock() {
+        try {
+            String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU"};
+            DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                @Override
+                public boolean isCellEditable(int row, int column) {
+                    return false;
+                }
+            };
+            viewTable.setModel(dtm);
     
+            try {
+                // Corrected SQL query to filter only private sector stocks
+                String query = "SELECT Stock_ID, Stock_name, Quantity, PPU FROM stock WHERE Sector = 'Government Sector'";
+                Connection connection = DBConnection.getInstance().getConnection();
+                PreparedStatement pst = connection.prepareStatement(query);
+                ResultSet rs = pst.executeQuery();
+    
+                while (rs.next()) {
+                    Object[] rowData = {
+                        rs.getString("Stock_ID"),
+                        rs.getString("Stock_name"),
+                        rs.getInt("Quantity"),
+                        rs.getDouble("PPU")
+                    };
+                    dtm.addRow(rowData);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception ex) {
+            Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage());
+        }
+    }
 }
