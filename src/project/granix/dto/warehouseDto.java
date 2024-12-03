@@ -6,17 +6,27 @@ public class warehouseDto {
     private Double Max_Capacity;
     private String Location;
     private String Warehouse_Telephone;
+    private String Sector;
     
     public warehouseDto() {
     }
 
-    public warehouseDto(String Warehouse_ID, String Warehouse_name, Double Max_Capacity,String Location, String Warehouse_Telephone) {
+    public warehouseDto(String Warehouse_ID, String Warehouse_name, Double Max_Capacity,String Location, String Warehouse_Telephone, String Sector) {
         
         this.Warehouse_ID = Warehouse_ID;
         this.Warehouse_name = Warehouse_name;
         this.Max_Capacity = Max_Capacity;
         this.Location = Location;
         this.Warehouse_Telephone = Warehouse_Telephone;
+        this.Sector = Sector;
+    }
+
+    public String getSector() {
+        return Sector;
+    }
+
+    public void setSector(String sector) {
+        Sector = sector;
     }
 
     public String getWarehouse_ID() {
@@ -62,7 +72,7 @@ public class warehouseDto {
     @Override
     public String toString() {
         return "warehouseDto{" + "Warehouse_ID=" + Warehouse_ID + ", Warehouse_name=" + Warehouse_name + ", Max_Capacity="
-                + Max_Capacity + ", Location=" + Location + ", Warehouse_Telephone=" + Warehouse_Telephone + "}";
+                + Max_Capacity + ", Location=" + Location + ", Warehouse_Telephone=" + Warehouse_Telephone + ", Sector" +Sector+ "}";
     }
 
     

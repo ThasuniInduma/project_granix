@@ -14,7 +14,7 @@ public class warehouseServiceImpl implements warehouseService{
 
     @Override
     public String addWarehouse(warehouseDto dto) throws Exception {
-        warehouseEntity warehouseEntity = new warehouseEntity(dto.getWarehouse_ID(), dto.getWarehouse_name(), dto.getMax_Capacity(), dto.getLocation(), dto.getWarehouse_Telephone());
+        warehouseEntity warehouseEntity = new warehouseEntity(dto.getWarehouse_ID(), dto.getWarehouse_name(), dto.getMax_Capacity(), dto.getLocation(), dto.getWarehouse_Telephone(), dto.getSector());
         
         if(warehouseDao.add(warehouseEntity)){
             return "successfully added";
@@ -25,7 +25,7 @@ public class warehouseServiceImpl implements warehouseService{
 
     @Override
     public String updateWarehouse(warehouseDto dto) throws Exception {
-        warehouseEntity warehouseEntity = new warehouseEntity(dto.getWarehouse_ID(), dto.getWarehouse_name(), dto.getMax_Capacity(), dto.getLocation(), dto.getWarehouse_Telephone());
+        warehouseEntity warehouseEntity = new warehouseEntity(dto.getWarehouse_ID(), dto.getWarehouse_name(), dto.getMax_Capacity(), dto.getLocation(), dto.getWarehouse_Telephone(),dto.getSector());
         
         if(warehouseDao.update(warehouseEntity)){
             return "successfully updated";
@@ -39,7 +39,7 @@ public class warehouseServiceImpl implements warehouseService{
     @Override
     public warehouseDto getWarehouse(String id) throws Exception {
         warehouseEntity entity = warehouseDao.get(id);
-        return new warehouseDto(entity.getWarehouse_ID(), entity.getWarehouse_name(), entity.getMax_Capacity(), entity.getLocation(), entity.getWarehouse_Telephone());
+        return new warehouseDto(entity.getWarehouse_ID(), entity.getWarehouse_name(), entity.getMax_Capacity(), entity.getLocation(), entity.getWarehouse_Telephone(),entity.getSector());
     }
 
     @Override
@@ -48,7 +48,7 @@ public class warehouseServiceImpl implements warehouseService{
         ArrayList<warehouseEntity> warehouseEntities = warehouseDao.getAll();
         
         for (warehouseEntity entity : warehouseEntities) {
-            warehouseDto dto = new warehouseDto(entity.getWarehouse_ID(), entity.getWarehouse_name(), entity.getMax_Capacity(), entity.getLocation(), entity.getWarehouse_Telephone());
+            warehouseDto dto = new warehouseDto(entity.getWarehouse_ID(), entity.getWarehouse_name(), entity.getMax_Capacity(), entity.getLocation(), entity.getWarehouse_Telephone(),entity.getSector());
             warehouseDtos.add(dto);
         }
         return warehouseDtos;

@@ -4,6 +4,7 @@ package Interfaces;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -13,6 +14,10 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -28,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Interfaces.AddNewWarehouses;
 import controller.warehouseController;
+import db.DBConnection;
 import dto.warehouseDto;
 
 
@@ -38,6 +44,7 @@ public class AddNewWarehouses extends JFrame{
     private JTextField WarehouseTelTextBox;
     private JTextField warehouseLocationTextField;
     private JTextField WarehouseCapacity;
+    private JComboBox<String> dropdown;
 
     private JTable viewTable;
     private DefaultTableModel dtm;
@@ -166,17 +173,23 @@ public class AddNewWarehouses extends JFrame{
         WarehouseTelTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
         
 
-        warehouseLocationTextField = new JTextField("Enter Warehouse Location");
+        warehouseLocationTextField = new JTextField("Enter Location");
         warehouseLocationTextField.setBounds(620, 200, 240, 40);
         warehouseLocationTextField.setFont(new Font("Arial", Font.ITALIC, 20));
 
-        WarehouseCapacity = new JTextField("Enter Warehouse maximum Capacity");
-        WarehouseCapacity.setBounds(360, 260, 500, 40);
+        WarehouseCapacity = new JTextField("Maximum Capacity");
+        WarehouseCapacity.setBounds(620, 260, 240, 40);
         WarehouseCapacity.setFont(new Font("Arial", Font.ITALIC, 20));
+
+        //Select Crop store Sector
+        dropdown = new JComboBox<>();
+        dropdown.setBounds(360, 260, 240, 40);
+        dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
+        dropdown.setBackground(Color.WHITE);
 
 
         JButton saveItemButton = new JButton("Add Warehouse");
-        saveItemButton.setBounds(620, 320, 200, 50);
+        saveItemButton.setBounds(620, 330, 200, 50);
         saveItemButton.setBackground(new Color(237, 235, 235));
         saveItemButton.setForeground(Color.BLACK);
         saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
@@ -268,7 +281,7 @@ public class AddNewWarehouses extends JFrame{
             public void focusLost(FocusEvent e) {
                 // Lose Focus
                 if (WarehouseCapacity.getText().isEmpty()) {
-                    WarehouseCapacity.setText("Enter Warehouse maximum Capacity");
+                    WarehouseCapacity.setText("Maximum Capacity");
                 }
             }
         });
@@ -284,7 +297,7 @@ public class AddNewWarehouses extends JFrame{
             public void focusLost(FocusEvent e) {
                 // Lose Focus
                 if (warehouseLocationTextField.getText().isEmpty()) {
-                    warehouseLocationTextField.setText("Enter Warehouse Location");
+                    warehouseLocationTextField.setText("Enter Location");
                 }
             }
         });
@@ -363,7 +376,7 @@ public class AddNewWarehouses extends JFrame{
         add(warehouseLocationTextField);
         add(WarehouseCapacity);
         add(saveItemButton);
-
+        add(dropdown);
         add(scrollPane);
         add(titleBox);
         add(menuBox);
@@ -371,12 +384,27 @@ public class AddNewWarehouses extends JFrame{
         add(backgroundImageSetter);
 
         loadallWarehouse();
+        loadSectors();
     } 
+            private void loadSectors() {
+                dropdown.removeAllItems();
+                try {
+                    String query = "SELECT DISTINCT Sector FROM warehouse";
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    PreparedStatement pst = connection.prepareStatement(query);
+                    ResultSet rs = pst.executeQuery();
+                    while (rs.next()) {
+                        dropdown.addItem(rs.getString("Sector")); // Add each type
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
 
 
     private void addWarehouse() throws Exception {
                 try {
-                    warehouseDto warehouseDto = new warehouseDto(WarehouseIDTextBox.getText(), WarehouseNameTextBox.getText(), Double.parseDouble(WarehouseCapacity.getText()),warehouseLocationTextField.getText(),WarehouseTelTextBox.getText());
+                    warehouseDto warehouseDto = new warehouseDto(WarehouseIDTextBox.getText(), WarehouseNameTextBox.getText(), Double.parseDouble(WarehouseCapacity.getText()),warehouseLocationTextField.getText(),WarehouseTelTextBox.getText(),dropdown.getSelectedItem().toString());
                     
                     String result = warehouseController.addWarehouse(warehouseDto);
                     JOptionPane.showConfirmDialog(this, result);
@@ -393,11 +421,11 @@ public class AddNewWarehouses extends JFrame{
                 WarehouseCapacity.setText("");
                 warehouseLocationTextField.setText("");
                 WarehouseTelTextBox.setText("");
-
+                dropdown.setSelectedItem("please select");
             }
             private void loadallWarehouse() {
                 try {
-                    String[] columns = {"Warehouse_ID", "Warehouse_name", "Max_Capacity", "Location","Warehouse_Telephone"};
+                    String[] columns = {"Warehouse_ID", "Warehouse_name", "Max_Capacity", "Location","Warehouse_Telephone", "Sector"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
@@ -413,7 +441,8 @@ public class AddNewWarehouses extends JFrame{
                             warehouse.getWarehouse_name(),
                             warehouse.getMax_Capacity(),
                             warehouse.getLocation(),
-                            warehouse.getWarehouse_Telephone()
+                            warehouse.getWarehouse_Telephone(),
+                            warehouse.getSector()
                         };
                         dtm.addRow(rowData);
                     }

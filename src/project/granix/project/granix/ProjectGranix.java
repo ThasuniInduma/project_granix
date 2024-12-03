@@ -27,7 +27,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new DashboardView().setVisible(true);
+        new AddNewWarehouses().setVisible(true);
     }
     
 }
