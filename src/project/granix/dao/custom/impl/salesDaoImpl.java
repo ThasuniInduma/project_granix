@@ -11,12 +11,12 @@ public class salesDaoImpl implements salesDao{
 
     @Override
     public boolean add(salesEntity t) throws Exception {
-        return CrudUtil.executeUpdate("INSERT INTO stock_obtain(Stock_ID, Buyer_ID, Quantity_obtained) VALUES(?,?,?)", t.getStock_ID(),t.getBuyer_ID(),t.getQuantity_obtained());
+        return CrudUtil.executeUpdate("INSERT INTO stock_obtain(Stock_ID, Buyer_ID, Quantity_obtained, Warehouse_ID) VALUES(?,?,?,?)", t.getStock_ID(),t.getBuyer_ID(),t.getQuantity_obtained(),t.getWarehouse_ID());
     }
 
     @Override
     public boolean update(salesEntity t) throws Exception {
-        return CrudUtil.executeUpdate("UPDATE stock_obtain SET Stock_ID = ?, Quantity_obtained = ? WHERE Buyer_ID = ?",t.getStock_ID(),t.getQuantity_obtained(),t.getBuyer_ID());
+        return CrudUtil.executeUpdate("UPDATE stock_obtain SET Stock_ID = ?, Quantity_obtained = ?,Warehouse_ID WHERE Buyer_ID = ?",t.getStock_ID(),t.getQuantity_obtained(),t.getWarehouse_ID(),t.getBuyer_ID());
     }
 
 
@@ -25,9 +25,10 @@ public class salesDaoImpl implements salesDao{
         ResultSet rst = CrudUtil.executeQuery("SELECT*FROM stock_obtain WHERE Buyer_ID = ?", id);
         
         while (rst.next()) {            
-            salesEntity salesEntity = new salesEntity(rst.getString(1),
-                    rst.getString(2),
-                    rst.getDouble(3)
+            salesEntity salesEntity = new salesEntity(rst.getString(2),
+                    rst.getString(3),
+                    rst.getDouble(4),
+                    rst.getString(5)
                     );
             return salesEntity;
         }
@@ -40,9 +41,10 @@ public class salesDaoImpl implements salesDao{
         
         ResultSet rst = CrudUtil.executeQuery("SELECT*FROM stock_obtain");
         while (rst.next()) {            
-            salesEntity salesEntity = new salesEntity(rst.getString(1),
-                    rst.getString(2),
-                    rst.getDouble(3)
+            salesEntity salesEntity = new salesEntity(rst.getString(2),
+                    rst.getString(3),
+                    rst.getDouble(4),
+                    rst.getString(5)
                    );
             salesEntitys.add(salesEntity);
         }

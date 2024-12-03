@@ -13,7 +13,7 @@ public class salesServiceImpl implements salesService{
 
     @Override
     public String addsales(salesdto dto) throws Exception {
-        salesEntity salesEntity = new salesEntity(dto.getStock_ID(), dto.getBuyer_ID(), dto.getQuantity_obtained());
+        salesEntity salesEntity = new salesEntity(dto.getStock_ID(), dto.getBuyer_ID(), dto.getQuantity_obtained(),dto.getWarehouse_ID());
         
         if(salesDao.add(salesEntity)){
             return "successfully added";
@@ -24,7 +24,7 @@ public class salesServiceImpl implements salesService{
 
     @Override
     public String updatesales(salesdto dto) throws Exception {
-        salesEntity salesEntity = new salesEntity(dto.getStock_ID(), dto.getBuyer_ID(), dto.getQuantity_obtained());
+        salesEntity salesEntity = new salesEntity(dto.getStock_ID(), dto.getBuyer_ID(), dto.getQuantity_obtained(),dto.getWarehouse_ID());
         
         if(salesDao.update(salesEntity)){
             return "successfully updated";
@@ -38,7 +38,7 @@ public class salesServiceImpl implements salesService{
     @Override
     public salesdto getsales(String id) throws Exception {
         salesEntity entity = salesDao.get(id);
-        return new salesdto(entity.getStock_ID(), entity.getBuyer_ID(), entity.getQuantity_obtained());
+        return new salesdto(entity.getStock_ID(), entity.getBuyer_ID(), entity.getQuantity_obtained(),entity.getWarehouse_ID());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class salesServiceImpl implements salesService{
         ArrayList<salesEntity> salesEntitys = salesDao.getAll();
         
         for (salesEntity entity : salesEntitys) {
-            salesdto dto = new salesdto(entity.getStock_ID(), entity.getBuyer_ID(), entity.getQuantity_obtained());
+            salesdto dto = new salesdto(entity.getStock_ID(), entity.getBuyer_ID(), entity.getQuantity_obtained(),entity.getWarehouse_ID());
             salesDtos.add(dto);
         }
         return salesDtos;

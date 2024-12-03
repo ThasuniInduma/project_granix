@@ -25,18 +25,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //Java Class Imports
 import Interfaces.StockSales;
 import controller.salesController;
-import controller.stockController;
 import db.DBConnection;
 import dto.salesdto;
-import dto.stockDto;
-import dto.warehouseDto;
+
 
 public class StockSales extends JFrame{
 
@@ -180,14 +177,7 @@ public class StockSales extends JFrame{
         addStockButton.setFont(new Font("Arial", Font.BOLD, 20));
         addStockButton.setBorder(border);
 
-        //Add Item Button
-        JButton updateStockButton = new JButton("Update Order");
-        updateStockButton.setBounds(620, 300, 240, 50);
-        updateStockButton.setBackground(new Color(237, 235, 235));
-        updateStockButton.setForeground(Color.BLACK);
-        updateStockButton.setFont(new Font("Arial", Font.BOLD, 20));
-        updateStockButton.setBorder(border);
-
+        
         //TextBox defined for StockQuantity
         StockQuantityTextBox = new JTextField("Enter Stock Quantity");
         StockQuantityTextBox.setBounds(360, 220, 240, 40);
@@ -301,15 +291,14 @@ public class StockSales extends JFrame{
 
         addStockButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                //addToOrder();
+                try {
+                    addToOrder();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
             }
         });
-        updateStockButton.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                //updateOrder();
-            }
-        });
-
+        
         
         //Add Elements to the Frame
         add(logoImageSetter);
@@ -323,7 +312,6 @@ public class StockSales extends JFrame{
         add(dropdown);
         add(dropdown2);
         add(addStockButton);
-        add(updateStockButton);
 
         add(StockQuantityTextBox);
         add(BuyerIDTextBox);
@@ -335,7 +323,7 @@ public class StockSales extends JFrame{
 
         loadStocks();
         loadWarehouse();
-        loadOrders();
+        //loadOrders();
     } 
 
             private void loadStocks() {
@@ -366,9 +354,9 @@ public class StockSales extends JFrame{
                     e.printStackTrace();
                 }
             }
-            private void loadOrders() {
+            /*private void loadOrders() {
                 try {
-                    String[] columns = {"Stock_ID", "Quantity"};
+                    String[] columns = {"Stock_name", "Quantity"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
@@ -390,15 +378,15 @@ public class StockSales extends JFrame{
                     Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
-            }
+            }*/
             private void addToOrder() throws Exception {
                 try {
-                    //salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),dropdown2.getSelectedItem().toString());
+                    salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),getWarehouseIdByName(dropdown2.getSelectedItem().toString()));
                     
-                    //String result = salesController.addsales(salesdto);
-                    //JOptionPane.showConfirmDialog(this, result);
+                    String result = salesController.addsales(salesdto);
+                    JOptionPane.showConfirmDialog(this, result);
                     Clear();
-                    loadOrders();
+                    //loadOrders();
                     } catch (Exception ex) {
                         Logger.getLogger(AddNewWarehouses.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(this, ex.getMessage());
@@ -430,6 +418,32 @@ public class StockSales extends JFrame{
                 }
                 return id; // Returns null if no record is found
             }
+            public String getWarehouseIdByName(String name) {
+                String id = null;
+                try {
+                    // Establish database connection
+                    Connection connection = DBConnection.getInstance().getConnection();
+            
+                    // SQL query to get the ID based on the name
+                    String query = "SELECT Warehouse_ID FROM warehouse WHERE Warehouse_name = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+            
+                    // Set the name parameter
+                    preparedStatement.setString(1, name);
+            
+                    // Execute the query
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            
+                    // Retrieve the ID if a record is found
+                    if (resultSet.next()) {
+                        id = resultSet.getString("Warehouse_ID");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error retrieving ID by name: " + e.getMessage());
+                }
+                return id; // Returns null if no record is found
+            }
             private void Clear() {
                 BuyerIDTextBox.setText("");
                 StockQuantityTextBox.setText("");
@@ -437,6 +451,7 @@ public class StockSales extends JFrame{
                 dropdown2.setSelectedItem("Please Select");;
 
             }
+            
 }
 
 

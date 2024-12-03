@@ -37,7 +37,7 @@ VALUES
 ('S003', 'W003');
 
 /* Insert Data into Stock Obtain (Relationship Between Stock and Buyer) */
-INSERT INTO stock_obtain (Stock_ID, Buyer_ID, Quantity_obtained, Obtain_Date)
+INSERT INTO stock_obtain (Stock_ID, Buyer_ID, Quantity_obtained, Warehouse_ID)
 VALUES 
 ('S001', 'B001', 100, 'W001'),
 ('S002', 'B002', 150, 'W002'),

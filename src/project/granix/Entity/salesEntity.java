@@ -4,15 +4,17 @@ public class salesEntity {
     private String Stock_ID;
     private String Buyer_ID;
     private Double Quantity_obtained;
+    private String Warehouse_ID;
 
     public salesEntity() {
     }
 
-    public salesEntity(String Stock_ID, String Buyer_ID, Double Quantity_obtained) {
+    public salesEntity(String Stock_ID, String Buyer_ID, Double Quantity_obtained, String Warehouse_ID) {
         
         this.Stock_ID = Stock_ID;
         this.Buyer_ID = Buyer_ID;
         this.Quantity_obtained = Quantity_obtained;
+        this.Warehouse_ID = Warehouse_ID;
         
     }
 
@@ -22,7 +24,7 @@ public class salesEntity {
 
     @Override
     public String toString() {
-        return "salesEntity{"+"Stock_ID=" + Stock_ID + ", Buyer_ID=" + Buyer_ID + ", Quantity_obtained=" + Quantity_obtained
+        return "salesEntity{"+"Stock_ID=" + Stock_ID + ", Buyer_ID=" + Buyer_ID + ", Quantity_obtained=" + Quantity_obtained +", Warehouse_ID"+ Warehouse_ID
                 + "}";
     }
 
@@ -44,5 +46,13 @@ public class salesEntity {
 
     public void setQuantity_obtained(Double quantity_obtained) {
         Quantity_obtained = quantity_obtained;
+    }
+
+    public String getWarehouse_ID() {
+        return Warehouse_ID;
+    }
+
+    public void setWarehouse_ID(String warehouse_ID) {
+        Warehouse_ID = warehouse_ID;
     }
 }
