@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -322,8 +323,16 @@ public class StockSales extends JFrame{
             
             private void addToOrder() throws Exception {
                 try {
+
+                    String stockName = dropdown.getSelectedItem().toString();
+                   
+                    double quantity = Double.parseDouble(StockQuantityTextBox.getText());
+                    String warehouseName = dropdown2.getSelectedItem().toString();
+
                     salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),getWarehouseIdByName(dropdown2.getSelectedItem().toString()));
                     
+                    updateStockAndWarehouse(stockName, warehouseName, quantity);
+
                     String result = salesController.addsales(salesdto);
                     JOptionPane.showMessageDialog(this, result, "Order Completed Successfully", JOptionPane.INFORMATION_MESSAGE);
 
@@ -392,6 +401,29 @@ public class StockSales extends JFrame{
                 dropdown.setSelectedItem("Please Select");
                 dropdown2.setSelectedItem("Please Select");;
 
+            }
+
+            private void updateStockAndWarehouse(String stockName, String warehouseName, double quantity) {
+                try {
+                    // Establish database connection
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    Statement statement = connection.createStatement();
+            
+                    // Update stock quantity
+                    String updateStockQuery = "UPDATE stock SET Quantity = Quantity - " + quantity + 
+                                              " WHERE Stock_name = '" + stockName + "'";
+                    statement.executeUpdate(updateStockQuery);
+            
+                    // Update warehouse quantity
+                    String updateWarehouseQuery = "UPDATE warehouse SET Qty = Qty - " + quantity + 
+                                                  " WHERE Warehouse_name = '" + warehouseName + "'";
+                    statement.executeUpdate(updateWarehouseQuery);
+            
+                    JOptionPane.showMessageDialog(this, "Stock and warehouse quantities updated successfully.");
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error updating quantities: " + e.getMessage());
+                }
             }
             
 }
