@@ -403,14 +403,24 @@ public class ModifyStocks extends JFrame{
             private void updateStock() {
                 try {
                     stockDto stockDto = new stockDto(StockIDTextBox.getText(), StockNameTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),Double.parseDouble(ppuTextField.getText()), dropdownType.getSelectedItem().toString());
-                    String result = stockController.updateStock(stockDto);
-                    JOptionPane.showMessageDialog(this, result);
-                    Clear();
-                    loadallStock();
-                } catch (Exception ex) {
-                    Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
+                    //String result = stockController.updateStock(stockDto);
+                    //JOptionPane.showMessageDialog(this, result);
+
+                    if (canAddToWarehouse(stockDto.getWarehouse(), stockDto.getQuantity())) {
+                        // Add the stock to the database
+                        String result = stockController.updateStock(stockDto);
+                        JOptionPane.showMessageDialog(this, result);
+    
+                        // Update the warehouse after adding the stock
+                        updateWarehouse(stockDto.getWarehouse(), stockDto.getQuantity());
+                    }
+                        Clear();
+                        loadallStock();
+                        } catch (Exception ex) {
+                            Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(this, ex.getMessage());
+                        }
+                    
             }
 
             private void Clear() {
@@ -470,5 +480,53 @@ public class ModifyStocks extends JFrame{
                     Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
+            }
+            private void updateWarehouse(String warehouseName, double addedQuantity) {
+                try {
+                    // SQL query to update the warehouse stock count or any other details
+                    String query = "UPDATE warehouse SET Qty = ? WHERE Warehouse_name = ?";
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    PreparedStatement pst = connection.prepareStatement(query);
+            
+                    // Set the parameters
+                    pst.setDouble(1, addedQuantity);
+                    pst.setString(2, warehouseName);
+            
+                    // Execute the update
+                    int updatedRows = pst.executeUpdate();
+                    if (updatedRows > 0) {
+                        System.out.println("Warehouse updated successfully.");
+                    } else {
+                        System.out.println("Warehouse update failed.");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error updating warehouse: " + e.getMessage());
+                }
+            }
+            
+            private boolean canAddToWarehouse(String warehouseName, double addedQuantity) {
+                try {
+                    // SQL query to get current stock and max capacity of the warehouse
+                    String query = "SELECT Qty, Max_Capacity FROM warehouse WHERE Warehouse_name = ?";
+                    Connection connection = DBConnection.getInstance().getConnection();
+                    PreparedStatement pst = connection.prepareStatement(query);
+            
+                    // Set the parameter
+                    pst.setString(1, warehouseName);
+            
+                    // Execute the query
+                    ResultSet rs = pst.executeQuery();
+                    if (rs.next()) {
+                        double maxCapacity = rs.getDouble("Max_Capacity");
+            
+                        // Check if the new stock fits within the capacity
+                        return (addedQuantity) <= maxCapacity;
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Error checking warehouse capacity: " + e.getMessage());
+                }
+                return false; // Default to false in case of an error
             }
 }
