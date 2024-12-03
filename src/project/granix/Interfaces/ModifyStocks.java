@@ -408,7 +408,7 @@ public class ModifyStocks extends JFrame{
                     Clear();
                     loadallStock();
                 } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
             }
@@ -444,7 +444,7 @@ public class ModifyStocks extends JFrame{
                         dtm.addRow(rowData);
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
             }
@@ -467,7 +467,7 @@ public class ModifyStocks extends JFrame{
                     }
 
                 } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(ModifyStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
             }

@@ -57,7 +57,12 @@ public class warehouseServiceImpl implements warehouseService{
 
     @Override
     public String deleteWarehouse(String id) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteStock'");
+        
+        if (warehouseDao.delete(id)) {
+            return "Successfully Delete";
+        } else {
+            return "Fail";
+        }
+    
     }
 }

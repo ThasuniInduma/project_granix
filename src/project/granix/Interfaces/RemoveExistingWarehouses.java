@@ -6,12 +6,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,10 +26,22 @@ import javax.swing.table.DefaultTableModel;
 //Java Class Imports
 
 import Interfaces.RemoveExistingWarehouses;
+import controller.warehouseController;
+import dto.warehouseDto;
 
 
 public class RemoveExistingWarehouses extends JFrame{
+
+    private JTextField WarehouseIDTextBox;
+    private JTextField warehouseNameText;
+    private warehouseController warehouseController;
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
     public RemoveExistingWarehouses(){
+
+        warehouseController = new warehouseController();
+
          //JFrame Definitions
          setTitle("Grain Store Managment System"); //Title Changed
          setSize(1000, 700);
@@ -128,7 +144,7 @@ public class RemoveExistingWarehouses extends JFrame{
          logoutButton.setBorder(border);
 
          //TextBox defined for WarehouseID
-        JTextField WarehouseIDTextBox = new JTextField("Enter Warehouse ID");
+        WarehouseIDTextBox = new JTextField("Enter Warehouse ID");
         WarehouseIDTextBox.setBounds(360, 160, 240, 40);
         WarehouseIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
@@ -147,6 +163,13 @@ public class RemoveExistingWarehouses extends JFrame{
         itemNameLabel.setForeground(Color.BLACK);
         itemNameLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
+        //TextBox defined for StockId
+        warehouseNameText = new JTextField();
+        warehouseNameText.setBounds(360, 280, 240, 40);
+        warehouseNameText.setFont(new Font("Arial", Font.ITALIC, 20));
+
+
+
         //JLabel For Interface Title
         JLabel deleteLabel = new JLabel("Are you Sure you want to delete?");
         deleteLabel.setBounds(360, 320, 500, 20);
@@ -161,19 +184,12 @@ public class RemoveExistingWarehouses extends JFrame{
         deleteItemButton.setFont(new Font("Arial", Font.BOLD, 20));
         deleteItemButton.setBorder(border);
 
-         //Table Column Headings Defined
-        String []columnNames = {"Warehouse ID", "Name", "Tel"};
-        Object[][] StoreArray = {
-            {"W001", "Rice", 10400},
-            {"W002", "Barley", 5000},
-            {"W003", "Corn", 7800}
-        };
 
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -184,13 +200,6 @@ public class RemoveExistingWarehouses extends JFrame{
         viewTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
-
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(30); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-
-        
 
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
@@ -211,7 +220,7 @@ public class RemoveExistingWarehouses extends JFrame{
             public void focusLost(FocusEvent e) {
                 // Lose Focus
                 if (WarehouseIDTextBox.getText().isEmpty()) {
-                    WarehouseIDTextBox.setText("Enter Stock ID");
+                    WarehouseIDTextBox.setText("Enter Warehouse ID");
                 }
             }
         });
@@ -266,6 +275,18 @@ public class RemoveExistingWarehouses extends JFrame{
             }
         });
 
+        searchItemItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                 searchWarehouse();
+            }
+        });
+
+        deleteItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                 deleteWarehouse();
+            }
+        });
+
         //Add Elements to the Frame
         add(logoImageSetter);
         add(titleLabel);
@@ -283,9 +304,74 @@ public class RemoveExistingWarehouses extends JFrame{
         add(scrollPane);
         add(titleBox);
         add(menuBox);
+        add(warehouseNameText);
         //add(bodyBox);
         add(backgroundImageSetter);
+
+        loadallWarehouse();
     } 
+
+            private void searchWarehouse() {
+                try {
+                    String warehouseId = WarehouseIDTextBox.getText();
+                    warehouseDto warehouse = warehouseController.getWarehouse(warehouseId);
+                    if(warehouse != null){
+                        warehouseNameText.setText(warehouse.getWarehouse_name());
+                    }else{
+                         JOptionPane.showMessageDialog(this, "Item Not Found");
+                    }
+        
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoveExistingStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+
+            private void deleteWarehouse() {
+                try {
+                    String result = warehouseController.deleteWarehouse(WarehouseIDTextBox.getText());
+                    JOptionPane.showMessageDialog(this, result);
+                    Clear();
+                    loadallWarehouse();
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoveExistingStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            private void Clear() {
+                        WarehouseIDTextBox.setText("");
+                        warehouseNameText.setText("");
+
+            }
+            private void loadallWarehouse() {
+                try {
+                    String[] columns = {"Warehouse_ID", "Warehouse_name", "Max_Capacity", "Warehouse_Telephone","Sector"};
+                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    viewTable.setModel(dtm);
+            
+                    ArrayList<warehouseDto> warehouses = warehouseController.getAllWarehouse();
+                    for (warehouseDto warehouse : warehouses) {
+                        Object[] rowData = {
+                            warehouse.getWarehouse_ID(),
+                            warehouse.getWarehouse_name(),
+                            warehouse.getMax_Capacity(),
+                            warehouse.getLocation(),
+                            warehouse.getWarehouse_Telephone()
+                        };
+                        dtm.addRow(rowData);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoveExistingWarehouses.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            
+
 }
 
 

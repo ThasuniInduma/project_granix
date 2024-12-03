@@ -264,7 +264,7 @@ public class GovernmentAvailability extends JFrame{
                 e.printStackTrace();
             }
         } catch (Exception ex) {
-            Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(GovernmentAvailability.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }

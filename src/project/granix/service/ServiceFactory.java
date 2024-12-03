@@ -4,8 +4,6 @@
  */
 package service;
 
-import controller.warehouseController;
-import dao.custom.impl.warehouseDaoImpl;
 import service.custom.impl.buyerServiceImpl;
 import service.custom.impl.stockServiceImpl;
 import service.custom.impl.userServiceImpl;

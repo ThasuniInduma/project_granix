@@ -21,6 +21,10 @@ public class warehouseController {
         return warehouseService.updateWarehouse(warehouseDto);
     }
 
+    public String deleteWarehouse(String id) throws Exception {
+        return warehouseService.deleteWarehouse(id);
+    }
+
 
     public warehouseDto getWarehouse(String id) throws Exception {
         return warehouseService.getWarehouse(id);

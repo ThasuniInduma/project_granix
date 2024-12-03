@@ -53,6 +53,6 @@ public class warehouseDaoImpl implements warehouseDao{
 
     @Override
     public boolean delete(String id) throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        return CrudUtil.executeUpdate("DELETE FROM warehouse WHERE Warehouse_ID = ?",id);
     }
 }

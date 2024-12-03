@@ -14,7 +14,6 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
-import java.awt.event.MouseEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

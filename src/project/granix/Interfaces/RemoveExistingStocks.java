@@ -341,6 +341,7 @@ public class RemoveExistingStocks extends JFrame{
             }
             private void Clear() {
                         StockIDTextBox.setText("");
+                        itemNameText.setText("");
 
             }
             private void loadallStock() {
@@ -366,7 +367,7 @@ public class RemoveExistingStocks extends JFrame{
                         dtm.addRow(rowData);
                     }
                 } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(RemoveExistingStocks.class.getName()).log(Level.SEVERE, null, ex);
                     JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
             }

@@ -261,7 +261,7 @@ public class PrivateAvailability extends JFrame{
                 e.printStackTrace();
             }
         } catch (Exception ex) {
-            Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(PrivateAvailability.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage());
         }
     }
