@@ -53,7 +53,7 @@ public class stockDaoImpl implements stockDao{
 
     @Override
     public boolean delete(String id) throws Exception {
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        return CrudUtil.executeUpdate("DELETE FROM stock WHERE Stock_ID = ?",id);
     }
 
 }

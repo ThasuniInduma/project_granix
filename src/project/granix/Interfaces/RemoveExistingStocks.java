@@ -6,12 +6,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,10 +26,22 @@ import javax.swing.table.DefaultTableModel;
 //Java Class Imports
 
 import Interfaces.RemoveExistingStocks;
+import controller.stockController;
+import dto.stockDto;
 
 
 public class RemoveExistingStocks extends JFrame{
+
+    private JTextField StockIDTextBox;
+    private JTextField itemNameText;
+    private stockController stockController;
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
     public RemoveExistingStocks(){
+
+        stockController = new stockController();
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -128,9 +144,14 @@ public class RemoveExistingStocks extends JFrame{
         logoutButton.setBorder(border);
 
         //TextBox defined for StockId
-        JTextField StockIDTextBox = new JTextField("Enter Stock ID");
+        StockIDTextBox = new JTextField("Enter Stock ID");
         StockIDTextBox.setBounds(360, 160, 240, 40);
         StockIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
+
+        //TextBox defined for StockId
+        itemNameText = new JTextField();
+        itemNameText.setBounds(360, 280, 240, 40);
+        itemNameText.setFont(new Font("Arial", Font.ITALIC, 20));
 
 
         //Search Item Button
@@ -162,19 +183,12 @@ public class RemoveExistingStocks extends JFrame{
         deleteItemButton.setBorder(border);
 
 
-        //Table Column Headings Defined
-        String []columnNames = {"Item ID", "Name", "Quantity (kgs)", "PPUs"};
-        Object[][] StoreArray = {
-            {"G001", "Rice", 10400, 250},
-            {"G002", "Barley", 5000, 300},
-            {"G003", "Corn", 7800, 400}
-        };
 
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -186,12 +200,6 @@ public class RemoveExistingStocks extends JFrame{
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
 
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(30); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(3).setPreferredWidth(30);
-        
 
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
@@ -267,8 +275,21 @@ public class RemoveExistingStocks extends JFrame{
             }
         });
 
+        searchItemItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                 searchItem();
+            }
+        });
+
+        deleteItemButton.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                 deleteItem();
+            }
+        });
+
         //Add Elements to the Frame
         add(logoImageSetter);
+        add(itemNameText);
         add(titleLabel);
         add(dashBoardButton);
         add(availabilityButton);
@@ -286,5 +307,69 @@ public class RemoveExistingStocks extends JFrame{
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
+
+        loadallStock();
     } 
+
+
+            private void searchItem() {
+                try {
+                    String stockId = StockIDTextBox.getText();
+                    stockDto stock = stockController.getStock(stockId);
+                    if(stock != null){
+                        itemNameText.setText(stock.getStock_name());
+                    }else{
+                         JOptionPane.showMessageDialog(this, "Item Not Found");
+                    }
+        
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoveExistingStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+
+            private void deleteItem() {
+                try {
+                    String result = stockController.deleteStock(StockIDTextBox.getText());
+                    JOptionPane.showMessageDialog(this, result);
+                    Clear();
+                    loadallStock();
+                } catch (Exception ex) {
+                    Logger.getLogger(RemoveExistingStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            private void Clear() {
+                        StockIDTextBox.setText("");
+
+            }
+            private void loadallStock() {
+                try {
+                    String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU","Sector"};
+                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    viewTable.setModel(dtm);
+            
+                    ArrayList<stockDto> stocks = stockController.getAllStock();
+                    for (stockDto stock : stocks) {
+                        Object[] rowData = {
+                            stock.getStock_ID(),
+                            stock.getStock_name(),
+                            stock.getQuantity(),
+                            stock.getPPU(),
+                            stock.getSector()
+                        };
+                        dtm.addRow(rowData);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
+            
+
 }

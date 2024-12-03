@@ -190,15 +190,6 @@ public class AddNewStocks extends JFrame{
                 saveItemButton.setFont(new Font("Arial", Font.BOLD, 20));
                 saveItemButton.setBorder(border);
 
-                JButton updateItemButton = new JButton("Update Item");
-                updateItemButton.setBounds(400, 320, 200, 50);
-                updateItemButton.setBackground(new Color(237, 235, 235));
-                updateItemButton.setForeground(Color.BLACK);
-                updateItemButton.setFont(new Font("Arial", Font.BOLD, 20));
-                updateItemButton.setBorder(border);
-        
-        
-                //Table Column Headings Defined
                 
                 
         
@@ -358,27 +349,8 @@ public class AddNewStocks extends JFrame{
                         
                     }
                 });
-                updateItemButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e){
-                        
-                        try {
-                            updateStock();
-                        } catch (Exception e1) {
-                            
-                            e1.printStackTrace();
-                        }
-                        
-                    }
-                });
-                viewTable.addMouseListener(new java.awt.event.MouseAdapter() {
-                    public void mouseClicked(java.awt.event.MouseEvent evt) {
-                        tableMouseCliked(evt);
-                    }
-
-                    private void tableMouseCliked(MouseEvent evt) {
-                        searchStock();
-                    }
-                });
+                
+                
         
                 //Add Elements to the Frame
                 add(logoImageSetter);
@@ -389,7 +361,6 @@ public class AddNewStocks extends JFrame{
                 add(manageStocksButton);
                 add(manageWarehouseButton);
                 add(logoutButton);
-                add(updateItemButton);
                 add(StockIDTextBox);
                 add(StockNameTextBox);
                 add(StockQuantityTextBox);
@@ -470,39 +441,5 @@ public class AddNewStocks extends JFrame{
                 }
             }
 
-            private void updateStock() {
-                try {
-                    stockDto stockDto = new stockDto(StockIDTextBox.getText(), StockNameTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),Double.parseDouble(ppuTextField.getText()), dropdown.getSelectedItem().toString());
-                    String result = stockController.updateStock(stockDto);
-                    JOptionPane.showMessageDialog(this, result);
-                    Clear();
-                    loadallStock();
-                } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
-            }
-
             
-
-            private void searchStock() {
-                try {
-                    String stockId = viewTable.getValueAt(viewTable.getSelectedRow(), 0).toString();
-                    stockDto stockDto = stockController.getStock(stockId);
-
-                    if (stockDto != null) {
-                        StockIDTextBox.setText(stockDto.getStock_ID());
-                        StockNameTextBox.setText(stockDto.getStock_name());
-                        StockQuantityTextBox.setText(String.valueOf(stockDto.getQuantity()));
-                        ppuTextField.setText(String.valueOf(stockDto.getPPU()));
-                        dropdown.setSelectedItem(stockDto.getSector());;
-                    } else {
-                        JOptionPane.showMessageDialog(this, "Stock Not Found");
-                    }
-
-                } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
-            }
 }

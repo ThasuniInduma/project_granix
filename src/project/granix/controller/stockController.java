@@ -23,6 +23,9 @@ public class stockController {
         return stockService.updateStock(stockDto);
     }
 
+    public String deleteStock(String id) throws Exception {
+        return stockService.deleteStock(id);
+    }
 
     public stockDto getStock(String id) throws Exception {
         return stockService.getStock(id);

@@ -57,7 +57,10 @@ public class stockServiceImpl implements stockService{
 
     @Override
     public String deleteStock(String id) throws Exception {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteStock'");
+        if (stockDao.delete(id)) {
+            return "Successfully Delete";
+        } else {
+            return "Fail";
+        }
     }
 }
