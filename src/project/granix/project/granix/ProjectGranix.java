@@ -11,6 +11,7 @@ import Interfaces.DashboardView;
 import Interfaces.GovernmentAvailability;
 import Interfaces.HomeScreen;
 import Interfaces.LoginScreenBuyer;
+import Interfaces.PrivateAvailability;
 import Interfaces.SignUpScreenBuyer;
 import Interfaces.StockAvailability;
 
@@ -26,7 +27,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new GovernmentAvailability().setVisible(true);
+        new HomeScreen().setVisible(true);
     }
     
 }
