@@ -170,7 +170,7 @@ public class StockSales extends JFrame{
         BuyerIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
 
         //Add Item Button
-        JButton addStockButton = new JButton("Add to Order");
+        JButton addStockButton = new JButton("Complete Order");
         addStockButton.setBounds(360, 300, 240, 50);
         addStockButton.setBackground(new Color(237, 235, 235));
         addStockButton.setForeground(Color.BLACK);
@@ -360,11 +360,12 @@ public class StockSales extends JFrame{
                     salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),getWarehouseIdByName(dropdown2.getSelectedItem().toString()));
                     
                     String result = salesController.addsales(salesdto);
-                    JOptionPane.showConfirmDialog(this, result);
+                    JOptionPane.showMessageDialog(this, result, "Order Completed Successfully", JOptionPane.INFORMATION_MESSAGE);
+
                     Clear();
-                    //loadOrders();
+                    
                     } catch (Exception ex) {
-                        Logger.getLogger(AddNewWarehouses.class.getName()).log(Level.SEVERE, null, ex);
+                        Logger.getLogger(StockSales.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(this, ex.getMessage());
                     }
             }
