@@ -323,7 +323,7 @@ public class StockSales extends JFrame{
 
         loadStocks();
         loadWarehouse();
-        //loadOrders();
+        
     } 
 
             private void loadStocks() {
@@ -354,31 +354,7 @@ public class StockSales extends JFrame{
                     e.printStackTrace();
                 }
             }
-            /*private void loadOrders() {
-                try {
-                    String[] columns = {"Stock_name", "Quantity"};
-                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
-                        @Override
-                        public boolean isCellEditable(int row, int column) {
-                            return false;
-                        }
-                    };
-                    viewTable.setModel(dtm);
             
-                    ArrayList<salesdto> sales = salesController.getAllsales();
-                    for (salesdto sale : sales) {
-                        Object[] rowData = {
-                            sale.getStock_ID(),
-                            sale.getQuantity_obtained()
-                            
-                        };
-                        dtm.addRow(rowData);
-                    }
-                } catch (Exception ex) {
-                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(this, ex.getMessage());
-                }
-            }*/
             private void addToOrder() throws Exception {
                 try {
                     salesdto salesdto = new salesdto(getIdByName(dropdown.getSelectedItem().toString()),BuyerIDTextBox.getText(),Double.parseDouble(StockQuantityTextBox.getText()),getWarehouseIdByName(dropdown2.getSelectedItem().toString()));

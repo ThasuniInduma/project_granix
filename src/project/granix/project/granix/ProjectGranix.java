@@ -14,6 +14,7 @@ import Interfaces.LoginScreenBuyer;
 import Interfaces.PrivateAvailability;
 import Interfaces.SignUpScreenBuyer;
 import Interfaces.StockAvailability;
+import Interfaces.StockPurchases;
 import Interfaces.StockSales;
 
 
@@ -28,7 +29,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new StockSales().setVisible(true);
+        new StockPurchases().setVisible(true);
     }
     
 }

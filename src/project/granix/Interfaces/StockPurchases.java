@@ -4,27 +4,40 @@ package Interfaces;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener; 
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 //Java Class Imports
 import Interfaces.StockPurchases;
+import controller.salesController;
+import dto.salesdto;
 
 
 public class StockPurchases extends JFrame{
+
+    private JTable viewTable;
+    private DefaultTableModel dtm;
+
+    private salesController salesController;
+
     public StockPurchases(){
+
+        salesController = new salesController();
+
         //JFrame Definitions
         setTitle("Grain Store Managment System"); //Title Changed
         setSize(1000, 700);
@@ -126,44 +139,13 @@ public class StockPurchases extends JFrame{
         logoutButton.setFont(new Font("Arial", Font.BOLD, 20));
         logoutButton.setBorder(border);
 
-        //Select Crop Name
-        String[] options = {"Rice", "Wheat"};
-        JComboBox<String> dropdown = new JComboBox<>(options);
-        dropdown.setBounds(360, 160, 240, 40);
-        dropdown.setFont(new Font("Arial", Font.ITALIC, 20));
-        dropdown.setBackground(Color.WHITE);
-
-        //TextBox defined for StockId
-        JTextField BuyerIDTextBox = new JTextField("Enter Buyer ID");
-        BuyerIDTextBox.setBounds(620, 160, 240, 40);
-        BuyerIDTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
-
-        //Add Item Button
-        JButton addStockButton = new JButton("Add Stocks");
-        addStockButton.setBounds(360, 300, 200, 50);
-        addStockButton.setBackground(new Color(237, 235, 235));
-        addStockButton.setForeground(Color.BLACK);
-        addStockButton.setFont(new Font("Arial", Font.BOLD, 20));
-        addStockButton.setBorder(border);
-
-        //TextBox defined for StockQuantity
-        JTextField StockQuantityTextBox = new JTextField("Enter Stock Quantity");
-        StockQuantityTextBox.setBounds(360, 220, 240, 40);
-        StockQuantityTextBox.setFont(new Font("Arial", Font.ITALIC, 20));
-
-        //Table Column Headings Defined
-        String []columnNames = {"Item ID", "Name", "Quantity (kgs)", "PPUs"};
-        Object[][] StoreArray = {
-            {"G001", "Rice", 10400, 250},
-            {"G002", "Barley", 5000, 300},
-            {"G003", "Corn", 7800, 400}
-        };
+        
 
         // Create a table model
-        DefaultTableModel model = new DefaultTableModel(StoreArray, columnNames);
+        dtm = new DefaultTableModel();
 
         // Create a JTable using the model
-        JTable viewTable = new JTable(model);
+        viewTable = new JTable(dtm);
 
         //Table Appearance Customizations
         viewTable.setFont(new Font("Arial",Font.PLAIN, 14));
@@ -175,15 +157,11 @@ public class StockPurchases extends JFrame{
         viewTable.getTableHeader().setBackground(new Color(172, 145, 127));
         viewTable.getTableHeader().setForeground(Color.WHITE);
 
-        //Column Width Customizations
-        viewTable.getColumnModel().getColumn(0).setPreferredWidth(30); 
-        viewTable.getColumnModel().getColumn(1).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(2).setPreferredWidth(30);
-        viewTable.getColumnModel().getColumn(3).setPreferredWidth(30);
+        
         
         // Add the table to a JScrollPane for scroll functionality
         JScrollPane scrollPane = new JScrollPane(viewTable);
-        scrollPane.setBounds(300, 390, 600, 150);
+        scrollPane.setBounds(300, 140, 600, 450);
         scrollPane.setBackground(new Color(237, 235, 235));
         scrollPane.getViewport().setBackground(new Color(237, 235, 235));
         scrollPane.setBorder(new EmptyBorder(0,0,0,0));
@@ -247,15 +225,39 @@ public class StockPurchases extends JFrame{
         add(manageStocksButton);
         add(manageWarehouseButton);
         add(logoutButton);
-        add(dropdown);
-        add(addStockButton);
-        add(StockQuantityTextBox);
-        add(BuyerIDTextBox);
         add(scrollPane);
         add(titleBox);
         add(menuBox);
         //add(bodyBox);
         add(backgroundImageSetter);
+
+        loadOrders();
     } 
+
+    private void loadOrders() {
+                try {
+                    String[] columns = {"Stock_name", "Quantity"};
+                    DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
+                        @Override
+                        public boolean isCellEditable(int row, int column) {
+                            return false;
+                        }
+                    };
+                    viewTable.setModel(dtm);
+            
+                    ArrayList<salesdto> sales = salesController.getAllsales();
+                    for (salesdto sale : sales) {
+                        Object[] rowData = {
+                            sale.getStock_ID(),
+                            sale.getQuantity_obtained()
+                            
+                        };
+                        dtm.addRow(rowData);
+                    }
+                } catch (Exception ex) {
+                    Logger.getLogger(AddNewStocks.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
+                }
+            }
 
 }
