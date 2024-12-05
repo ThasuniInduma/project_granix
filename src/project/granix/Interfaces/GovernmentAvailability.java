@@ -235,7 +235,7 @@ public class GovernmentAvailability extends JFrame{
 
     private void loadallStock() {
         try {
-            String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU"};
+            String[] columns = {"Stock_ID", "Stock_name", "Quantity", "PPU", "Warehouse"};
             DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                 @Override
                 public boolean isCellEditable(int row, int column) {
@@ -246,7 +246,7 @@ public class GovernmentAvailability extends JFrame{
     
             try {
                 // Corrected SQL query to filter only private sector stocks
-                String query = "SELECT Stock_ID, Stock_name, Quantity, PPU FROM stock WHERE Sector = 'Government Sector'";
+                String query = "SELECT Stock_ID, Stock_name, Quantity, PPU, Warehouse FROM stock INNER JOIN warehouse ON stock.Warehouse = warehouse.Warehouse_ID WHERE warehouse.Sector = 'Government Sector'";
                 Connection connection = DBConnection.getInstance().getConnection();
                 PreparedStatement pst = connection.prepareStatement(query);
                 ResultSet rs = pst.executeQuery();
@@ -256,7 +256,8 @@ public class GovernmentAvailability extends JFrame{
                         rs.getString("Stock_ID"),
                         rs.getString("Stock_name"),
                         rs.getInt("Quantity"),
-                        rs.getDouble("PPU")
+                        rs.getDouble("PPU"),
+                        rs.getString("Warehouse")
                     };
                     dtm.addRow(rowData);
                 }

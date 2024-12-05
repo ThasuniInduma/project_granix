@@ -390,10 +390,12 @@ public class AddNewStocks extends JFrame{
                     e.printStackTrace();
                 }
             }
+
+            
         
             private void addStock() throws Exception {
                 try {
-                    stockDto stockDto = new stockDto(StockIDTextBox.getText(), StockNameTextBox.getText(), Double.parseDouble(StockQuantityTextBox.getText()),Double.parseDouble(ppuTextField.getText()),dropdown.getSelectedItem().toString());
+                    stockDto stockDto = new stockDto(StockIDTextBox.getText(), StockNameTextBox.getText(), Double.parseDouble(StockQuantityTextBox.getText()),Double.parseDouble(ppuTextField.getText()),getWarehouseIdByName(dropdown.getSelectedItem().toString()));
                     
                     //String result = stockController.addStock(stockDto);
                     //JOptionPane.showConfirmDialog(this, result);
@@ -460,7 +462,7 @@ public class AddNewStocks extends JFrame{
             private void updateWarehouse(String warehouseName, double addedQuantity) {
                 try {
                     // SQL query to update the warehouse stock count or any other details
-                    String query = "UPDATE warehouse SET Qty = Qty + ? WHERE Warehouse_name = ?";
+                    String query = "UPDATE warehouse SET Qty = Qty + ? WHERE Warehouse_ID = ?";
                     Connection connection = DBConnection.getInstance().getConnection();
                     PreparedStatement pst = connection.prepareStatement(query);
             
@@ -484,7 +486,7 @@ public class AddNewStocks extends JFrame{
             private boolean canAddToWarehouse(String warehouseName, double addedQuantity) {
                 try {
                     // SQL query to get current stock and max capacity of the warehouse
-                    String query = "SELECT Qty, Max_Capacity FROM warehouse WHERE Warehouse_name = ?";
+                    String query = "SELECT Qty, Max_Capacity FROM warehouse WHERE Warehouse_ID = ?";
                     Connection connection = DBConnection.getInstance().getConnection();
                     PreparedStatement pst = connection.prepareStatement(query);
             
@@ -505,5 +507,31 @@ public class AddNewStocks extends JFrame{
                     JOptionPane.showMessageDialog(this, "Error checking warehouse capacity: " + e.getMessage());
                 }
                 return false; // Default to false in case of an error
+            }
+            public String getWarehouseIdByName(String name) {
+                String id = null;
+                try {
+                    // Establish database connection
+                    Connection connection = DBConnection.getInstance().getConnection();
+            
+                    // SQL query to get the ID based on the name
+                    String query = "SELECT Warehouse_ID FROM warehouse WHERE Warehouse_name = ?";
+                    PreparedStatement preparedStatement = connection.prepareStatement(query);
+            
+                    // Set the name parameter
+                    preparedStatement.setString(1, name);
+            
+                    // Execute the query
+                    ResultSet resultSet = preparedStatement.executeQuery();
+            
+                    // Retrieve the ID if a record is found
+                    if (resultSet.next()) {
+                        id = resultSet.getString("Warehouse_ID");
+                    }
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Error retrieving ID by name: " + e.getMessage());
+                }
+                return id; // Returns null if no record is found
             }
 }
