@@ -29,7 +29,7 @@ public class ProjectGranix {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new GovernmentAvailability().setVisible(true);
+        new HomeScreen().setVisible(true);
     }
     
 }
