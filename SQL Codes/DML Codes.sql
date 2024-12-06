@@ -4,7 +4,6 @@ VALUES
 ('W001', 'Kandy_Warehouse', 1000, 'City Center', '0769823541',100, 'Private Sector'),
 ('W002', 'Colombo_Warehouse', 800, 'Eastside', '0774953684',200, 'Government Sector'),
 ('W003', 'Jaffna_Warehouse', 600, 'Westside', '0768324951',300, 'Private Sector');
-SELECT DISTINCT Sector FROM stock;
 
 /* Insert Data into Employee */
 INSERT INTO employee (Employee_ID, First_name, Second_name, User_Password, Telephone, Warehouse_ID)
