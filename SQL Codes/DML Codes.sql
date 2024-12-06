@@ -2,11 +2,11 @@
 USE Grain_Management_System;
 
 /* Insert Data into Warehouse */
-INSERT INTO warehouse (Warehouse_ID, Warehouse_name, Max_Capacity, Location, Warehouse_Telephone, Sector)
+INSERT INTO warehouse (Warehouse_ID, Warehouse_name, Max_Capacity, Location, Warehouse_Telephone, Qty, Sector)
 VALUES 
-('W001', 'Kandy_Warehouse', 1000, 'City Center', '0769823541', 'Private Sector'),
-('W002', 'Colombo_Warehouse', 800, 'Eastside', '0774953684', 'Government Sector'),
-('W003', 'Jaffna_Warehouse', 600, 'Westside', '0768324951', 'Private Sector');
+('W001', 'Kandy_Warehouse', 1000, 'City Center', '0769823541', 100, 'Private Sector'),
+('W002', 'Colombo_Warehouse', 800, 'Eastside', '0774953684', 200, 'Government Sector'),
+('W003', 'Jaffna_Warehouse', 600, 'Westside', '0768324951', 300, 'Private Sector');
 
 /* Insert Data into Employee */
 INSERT INTO employee (Employee_ID, First_name, Second_name, User_Password, Telephone, Warehouse_ID)
@@ -16,7 +16,7 @@ VALUES
 ('E003', 'Sumal', 'Rathnayaka', 'pass789', '0123456789', 'W003');
 
 /* Insert Data into Stock */
-INSERT INTO stock (Stock_ID, Stock_name, Quantity, PPU, Sector)
+INSERT INTO stock (Stock_ID, Stock_name, Quantity, PPU)
 VALUES 
 ('S001', 'Suwadel', 500, 100.50, 'W001'),
 ('S002', 'Kuruluthuda', 300, 120.75,'W001'),
