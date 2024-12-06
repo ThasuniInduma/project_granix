@@ -27,6 +27,7 @@ CREATE TABLE employee (
 );
 
 
+
 /* Create Stock Table */
 CREATE TABLE stock (
     Stock_ID CHAR(5) NOT NULL PRIMARY KEY,
@@ -43,6 +44,7 @@ CREATE TABLE buyer (
     Buyer_Password VARCHAR(10) NOT NULL,
     Buyer_Telephone CHAR(10) NOT NULL,
 );
+
 
 
 
