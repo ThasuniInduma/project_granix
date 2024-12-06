@@ -243,7 +243,7 @@ public class PrivateAvailability extends JFrame{
     
             try {
                 // Corrected SQL query to filter only private sector stocks
-                String query = "SELECT Stock_ID, Stock_name, Quantity, PPU FROM stock WHERE Sector = 'Private Sector'";
+                String query = "SELECT stock.Stock_ID, stock.Stock_name, stock.Quantity, stock.PPU, stock.Warehouse FROM stock INNER JOIN warehouse ON stock.Warehouse = warehouse.Warehouse_ID WHERE warehouse.Sector = 'Private Sector'";
                 Connection connection = DBConnection.getInstance().getConnection();
                 PreparedStatement pst = connection.prepareStatement(query);
                 ResultSet rs = pst.executeQuery();
