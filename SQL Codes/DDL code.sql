@@ -42,10 +42,8 @@ CREATE TABLE buyer (
     Buyer_ID CHAR(5) NOT NULL PRIMARY KEY,
     Buyer_name VARCHAR(45) NOT NULL,
     Buyer_Password VARCHAR(10) NOT NULL,
-    Buyer_Telephone CHAR(10) NOT NULL,
+    Buyer_Telephone CHAR(10) NOT NULL
 );
-
-
 
 
 /* Table for Relationship Between Stock and Warehouse (Many-to-Many) */
