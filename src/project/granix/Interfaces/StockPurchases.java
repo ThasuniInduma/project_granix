@@ -225,10 +225,10 @@ public class StockPurchases extends JFrame{
         add(logoImageSetter);
         add(titleLabel);
         add(dashBoardButton);
-        add(availabilityButton);
-        add(reportButton);
-        add(manageStocksButton);
-        add(manageWarehouseButton);
+        //add(availabilityButton);
+        //add(reportButton);
+        //add(manageStocksButton);
+        //add(manageWarehouseButton);
         add(logoutButton);
         add(scrollPane);
         add(titleBox);
