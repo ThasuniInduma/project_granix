@@ -284,10 +284,10 @@ add(cropCheckboxPanel);
         //add(manageStocksButton);
         //add(manageWarehouseButton);
         add(logoutButton);
-        add(scopeLabel);
+        //add(scopeLabel);
         add(cropLabel);
         
-        add(dropdown);
+        //add(dropdown);
         add(generateButton);
         add(downloadButton);
         add(titleBox);
