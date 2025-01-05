@@ -5,7 +5,6 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -132,7 +131,7 @@ public class ReportGenerate extends JFrame{
         logoutButton.setBorder(border);
 
         //JLabel For Scope Selection
-        JLabel scopeLabel = new JLabel("Select the Desired Field");
+        /*JLabel scopeLabel = new JLabel("Select the Desired Field");
         scopeLabel.setBounds(420, 140, 400, 20);
         scopeLabel.setForeground(Color.BLACK);
         scopeLabel.setFont(new Font("Arial", Font.BOLD, 20));
@@ -142,7 +141,7 @@ public class ReportGenerate extends JFrame{
         JComboBox<String> dropdown = new JComboBox<>(options);
         dropdown.setBounds(420, 180, 200, 30);
         dropdown.setFont(new Font("Arial", Font.BOLD, 20));
-        dropdown.setBackground(new Color(237, 235, 235));
+        dropdown.setBackground(new Color(237, 235, 235));*/
 
         //JLabel For Crop Selection
         JLabel cropLabel = new JLabel("Select Crops");
