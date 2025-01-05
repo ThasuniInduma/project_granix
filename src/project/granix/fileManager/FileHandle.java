@@ -91,7 +91,7 @@ public class FileHandle {
         
             
             writeFile.write(String.format("%-15s%-20s%-15s%-15s%-15s\n", "Stock ID", "Stock Name", "Warehouse", "Price", "Quantity"));
-            writeFile.write("--------------------------------------------------------------\n");
+            writeFile.write("--------------------------------------------------------------------------\n");
         
             
             if (selectedStocks != null && !selectedStocks.isEmpty()) {
