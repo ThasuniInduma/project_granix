@@ -241,7 +241,7 @@ public class StockPurchases extends JFrame{
 
     private void loadOrders() {
                 try {
-                    String[] columns = {"Stock_name", "Quantity"};
+                    String[] columns = {"Stock Name", "Quantity"};
                     DefaultTableModel dtm = new DefaultTableModel(columns, 0) {
                         @Override
                         public boolean isCellEditable(int row, int column) {
