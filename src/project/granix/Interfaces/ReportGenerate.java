@@ -1,7 +1,6 @@
 package Interfaces;
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 //Imports
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
