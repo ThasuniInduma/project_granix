@@ -146,7 +146,7 @@ public class ReportGenerate extends JFrame{
 
         //JLabel For Crop Selection
         JLabel cropLabel = new JLabel("Select Crops");
-        cropLabel.setBounds(420, 240, 400, 20);
+        cropLabel.setBounds(420, 140, 400, 20);
         cropLabel.setForeground(Color.BLACK);
         cropLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
@@ -155,7 +155,7 @@ public class ReportGenerate extends JFrame{
 
         // JPanel to hold dynamically created checkboxes
         JPanel cropCheckboxPanel = new JPanel();
-        cropCheckboxPanel.setBounds(420, 280, 300, 200); // Position and size of the panel
+        cropCheckboxPanel.setBounds(420, 180, 300, 250); // Position and size of the panel
         cropCheckboxPanel.setBackground(Color.WHITE);
 
         // Calculate the number of rows and columns dynamically
