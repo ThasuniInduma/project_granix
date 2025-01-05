@@ -208,6 +208,7 @@ public class LoginScreenBuyer extends JFrame{
                 loadDashboard();
             } else {
                 JOptionPane.showMessageDialog(LoginScreenBuyer.this, "Invalid username or password");
+                new LoginScreenBuyer().setVisible(true);
             }
         }
     }
