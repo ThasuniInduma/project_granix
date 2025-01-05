@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.awt.Desktop;
 
 
@@ -55,8 +56,7 @@ public class FileHandle {
         }
     }
 
-    public void WriteFile(){
-        //Get Time and Date
+    public void WriteFile(List<String> selectedStocks) {
         // Get the current date
         LocalDate currentDate = LocalDate.now();
         
@@ -74,12 +74,23 @@ public class FileHandle {
         String formattedDateTime = currentDateTime.format(dateTimeFormatter);
 
         System.out.println("Formatted Date and Time: " + formattedDateTime);
-        
-        //Write File 
-        try(FileWriter WriteFile = new FileWriter("example.txt", true)){
-            WriteFile.write("Hello World! \n" + formattedDateTime);
-        }
-        catch(Exception e){
+
+        // Write the file
+        try (FileWriter writeFile = new FileWriter("Report.txt", true)) {
+            writeFile.write("Report Generated on: " + formattedDateTime + "\n");
+            writeFile.write("Selected Stocks:\n");
+
+            // Check if there are any selected stocks and write them to the file
+            if (selectedStocks != null && !selectedStocks.isEmpty()) {
+                for (String stock : selectedStocks) {
+                    writeFile.write("- " + stock + "\n");
+                }
+            } else {
+                writeFile.write("No stocks selected.\n");
+            }
+
+            System.out.println("Report written successfully.");
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }   

@@ -195,7 +195,7 @@ add(cropCheckboxPanel);
         downloadButton.setFont(new Font("Arial", Font.BOLD, 18));
         downloadButton.setBorder(border);
 
-        FileHandle fileHandler = new FileHandle("example.txt");
+        FileHandle fileHandler = new FileHandle("Report.txt");
 
 
 
@@ -242,7 +242,20 @@ add(cropCheckboxPanel);
         //Event actions defined for generateButton
         generateButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                fileHandler.WriteFile();
+                List<String> selectedStocks = new ArrayList<>();
+                for (Component comp : cropCheckboxPanel.getComponents()) {
+                    if (comp instanceof JCheckBox) {
+                        JCheckBox checkbox = (JCheckBox) comp;
+                        if (checkbox.isSelected()) {
+                            selectedStocks.add(checkbox.getText());
+                        }
+                    }
+                }
+                if (!selectedStocks.isEmpty()) {
+                    fileHandler.WriteFile(selectedStocks);
+                } else {
+                    System.out.println("No stocks selected for report generation.");
+                }
             }
         });
 
