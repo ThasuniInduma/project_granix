@@ -86,24 +86,24 @@ public class FileHandle {
         
         // Write the file
         try (FileWriter writeFile = new FileWriter("Report.txt", true)) {
-            // Write header for the report
+            
             writeFile.write("Report Generated on: " + formattedDateTime + "\n\n");
         
-            // Write table headers
+            
             writeFile.write(String.format("%-15s%-20s%-15s%-15s%-15s\n", "Stock ID", "Stock Name", "Warehouse", "Price", "Quantity"));
             writeFile.write("--------------------------------------------------------------\n");
         
-            // Check if there are any selected stocks and write them to the file
+            
             if (selectedStocks != null && !selectedStocks.isEmpty()) {
                 for (String stock : selectedStocks) {
-                    // Get the stock ID by name
+                    
                     String stockId = getDetailsByName(stock);
         
-                    // Check if the ID was found
+                    
                     if (stockId != null) {
-                        // Fetch and write all details of the stock by its ID
+                        
                         String stockDetails = getStockDetailsById(stockId);
-                        // Split the details by newline and write each part to the correct column
+                        
                         String[] details = stockDetails.split("\n");
                         writeFile.write(String.format("%-15s%-20s%-15s%-15s%-15s\n", stockId, stock, details[1], details[2], details[3]));
                     } else {
@@ -123,20 +123,16 @@ public class FileHandle {
     public String getDetailsByName(String name) {
         String id = null;
         try {
-            // Establish database connection
+            
             Connection connection = DBConnection.getInstance().getConnection();
         
-            // SQL query to get the ID based on the name
             String query = "SELECT Stock_ID FROM stock WHERE Stock_name = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
         
-            // Set the name parameter
             preparedStatement.setString(1, name);
         
-            // Execute the query
             ResultSet resultSet = preparedStatement.executeQuery();
         
-            // Retrieve the ID if a record is found
             if (resultSet.next()) {
                 id = resultSet.getString("Stock_ID");
             }
@@ -144,31 +140,26 @@ public class FileHandle {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error retrieving ID by name: " + e.getMessage());
         }
-        return id; // Returns null if no record is found
+        return id; 
     }
     
     public String getStockDetailsById(String stockId) {
         StringBuilder details = new StringBuilder();
         try {
-            // Establish database connection
             Connection connection = DBConnection.getInstance().getConnection();
         
-            // SQL query to get all details based on the Stock_ID
             String query = "SELECT Stock_name, Warehouse, PPU, Quantity FROM stock WHERE Stock_ID = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
         
-            // Set the Stock_ID parameter
             preparedStatement.setString(1, stockId);
         
-            // Execute the query
             ResultSet resultSet = preparedStatement.executeQuery();
         
-            // Retrieve all details if a record is found
             if (resultSet.next()) {
-                details.append(resultSet.getString("Stock_name")).append("\n");   // Stock name
-                details.append(resultSet.getString("Warehouse")).append("\n");    // Warehouse
-                details.append(resultSet.getDouble("PPU")).append("\n");          // Price per unit (PPU)
-                details.append(resultSet.getInt("Quantity")).append("\n");        // Quantity
+                details.append(resultSet.getString("Stock_name")).append("\n");   
+                details.append(resultSet.getString("Warehouse")).append("\n");    
+                details.append(resultSet.getDouble("PPU")).append("\n");          
+                details.append(resultSet.getInt("Quantity")).append("\n");        
             } else {
                 details.append("No details found for this stock.\n");
             }
@@ -176,7 +167,7 @@ public class FileHandle {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error retrieving stock details: " + e.getMessage());
         }
-        return details.toString(); // Return all details as a string
+        return details.toString(); 
     }
     
     
