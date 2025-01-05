@@ -183,7 +183,7 @@ public class LoginScreenBuyer extends JFrame{
 
     // Load Dashboard after successful login
     private void loadDashboard() {
-        new DashboardView().setVisible(true);
+        new DashboardBuyer().setVisible(true);
         this.dispose();
     }
  
