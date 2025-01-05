@@ -157,8 +157,17 @@ public class ReportGenerate extends JFrame{
         // JPanel to hold dynamically created checkboxes
         JPanel cropCheckboxPanel = new JPanel();
         cropCheckboxPanel.setBounds(420, 280, 300, 200); // Position and size of the panel
-        cropCheckboxPanel.setLayout(new BoxLayout(cropCheckboxPanel, BoxLayout.Y_AXIS)); // Vertically stack checkboxes
         cropCheckboxPanel.setBackground(Color.WHITE);
+
+        // Calculate the number of rows and columns dynamically
+        int totalCheckboxes = stockList.size();
+        int panelHeight = cropCheckboxPanel.getHeight();
+        int checkboxHeight = 30; // Approximate height of a checkbox
+        int rows = panelHeight / checkboxHeight;
+        int columns = (int) Math.ceil((double) totalCheckboxes / rows);
+
+        // Set the GridLayout with calculated rows and columns
+        cropCheckboxPanel.setLayout(new GridLayout(0, columns, 10, 10)); // 0 rows, dynamically adjusted based on columns
 
         // Create a checkbox for each stock name
         for (String stock : stockList) {
@@ -169,11 +178,11 @@ public class ReportGenerate extends JFrame{
         }
 
         // Add the checkbox panel to the frame
-        add(cropCheckboxPanel);
+add(cropCheckboxPanel);
 
         //Buttons defined for Report Generate
         JButton generateButton = new JButton("Generate Report");
-        generateButton.setBounds(420, 380, 200, 40);
+        generateButton.setBounds(420, 500, 200, 40);
         generateButton.setBackground(new Color(237, 235, 235));
         generateButton.setForeground(Color.BLACK);
         generateButton.setFont(new Font("Arial", Font.BOLD, 18));
@@ -181,7 +190,7 @@ public class ReportGenerate extends JFrame{
 
         //Buttons defined for Report Download
         JButton downloadButton = new JButton("Download Report");
-        downloadButton.setBounds(420, 500, 200, 40);
+        downloadButton.setBounds(695, 500, 200, 40);
         downloadButton.setBackground(new Color(237, 235, 235));
         downloadButton.setForeground(Color.BLACK);
         downloadButton.setFont(new Font("Arial", Font.BOLD, 18));
