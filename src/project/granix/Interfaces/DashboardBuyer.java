@@ -162,8 +162,7 @@ public class DashboardBuyer extends JFrame{
         //Event actions defined for Reports Button
         reportButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
-                dispose();
-                new ReportGenerate().setVisible(true);
+                JOptionPane.showMessageDialog(null, "Access Only for Employees");
             }
         });
 
